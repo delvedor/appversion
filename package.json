@@ -1,14 +1,14 @@
 {
   "name": "appversion",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A module for keep track the version, build and commit of your javascript application.",
   "main": "index.js",
   "bin": {
     "apv": "cli.js"
   },
   "scripts": {
-    "build:cli": "./cli.js update build && babel es6/cli.es6.js --watch --out-file cli.js",
-    "build:index": "./cli.js update build && babel es6/index.es6.js --watch --out-file index.js",
+    "build:cli": "apv update build && babel es6/cli.es6.js --watch --out-file cli.js",
+    "build:index": "apv update build && babel es6/index.es6.js --watch --out-file index.js",
     "test": "node test || true"
   },
   "repository": {
