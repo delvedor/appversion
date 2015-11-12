@@ -1,4 +1,5 @@
 # appversion
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
 **appversion** is a **cli tool** for keep track the *version*, *build* and *commit* of your javascript application.  
 Project built following [semver](http://semver.org/) guidelines.
@@ -68,6 +69,24 @@ Commands list:
 Usage example:   
 ```$ apv update minor```
 
+By default appversion tries to update all the json file you put in appversion.json
+by searching recursively for these files starting from the current working directory.  
+If you want that appversion ignores some folder (it automatically excludes `node_modules` and `bower_component`) just add the ignore argument in this way:  
+`ignore="somefolder"`   
+If you want to ignore more than one folder just use `|`.  
+`ignore="folder1|folder2"`
+
+| **cmd** |  **args** |   **args**
+|:-------:|:---------:|:------------------------------------:|
+| update  |  major    |   ignore="somefolder"                |
+|         |  minor    |                                      |
+|         |  patch    |                                      |
+|                                                            |
+| version |  "x.y.z"  |   ignore="somefolder"                |
+
+Full example:  
+`apv version "1.1.0" ignore="folder1|folder2"`
+
 ### In app:
 
 | Function            |       |
@@ -110,37 +129,39 @@ Sometimes you want to have the version/build number accessible in your applicati
 
 ```javascript
 // es5:
-var av = require('appversion');
+var apv = require('appversion')
 
-console.log(av.getAppVersionSync());
-console.log(av.getAppVersionSync().version);
+console.log(apv.getAppVersionSync())
+console.log(apv.getAppVersionSync().version)
 
-av.getAppVersion(function (err, data) {
-  console.log(data);
+apv.getAppVersion(function (err, data) {
+  if (err) console.log(err)
+  console.log(data)
 });
 
-console.log(a.composePatternSync('M.m.p-s n-d'));
+console.log(apv.composePatternSync('M.m.p-s n-d'))
 
-a.composePattern('M.m.p-s n-d', function(ptt) {
-  console.log(ptt);
+apv.composePattern('M.m.p-s n-d', function(ptt) {
+  console.log(ptt)
 });
 
 
 // es6 - es2015:
-import { getAppVersion, getAppVersionSync, composePattern, composePatternSync } from 'appversion';
+import { getAppVersion, getAppVersionSync, composePattern, composePatternSync } from 'appversion'
 
-console.log(getAppVersionSync());
-console.log(getAppVersionSync().version);
+console.log(getAppVersionSync())
+console.log(getAppVersionSync().version)
 
 getAppVersion(function (err, data) {
-  console.log(data);
+  if (err) console.log(err)
+  console.log(data)
 });
 
-console.log(composePatternSync('M.m.p-s n-d'));
+console.log(composePatternSync('M.m.p-s n-d'))
 
 composePattern('M.m.p-s n-d', function(ptt) {
-  console.log(ptt);
-});
+  console.log(ptt)
+})
 ```
 
 ## Automating
@@ -153,8 +174,22 @@ If you are using *npm scripts* you can easily integrate appversion in your workf
 ...
 ```
 
+## Build
+```
+$ npm install
+$ npm run build:cli
+$ npm run build:index
+$ chmod u+x cli.js
+$ npm run test
+
+$ ./cli.js <args>
+```
+
 ## Contributing
-If you feel you can help in any way, be it with examples, extra testing, or new features please open a pull request or open an issue.
+If you feel you can help in any way, be it with examples, extra testing, or new features please open a pull request or open an issue.  
+
+The code follow the Standard code style.  
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 
 ______________________________________________________________________________________________________________________

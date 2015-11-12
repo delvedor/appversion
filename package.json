@@ -1,6 +1,6 @@
 {
   "name": "appversion",
-  "version": "1.0.1",
+  "version": "1.2.3",
   "description": "A module for keep track the version, build and commit of your javascript application.",
   "main": "index.js",
   "bin": {
@@ -31,5 +31,8 @@
   "homepage": "https://github.com/delvedor/appversion",
   "devDependencies": {
     "tape": "^4.2.0"
+  },
+  "dependencies": {
+    "walk": "^2.3.9"
   }
 }

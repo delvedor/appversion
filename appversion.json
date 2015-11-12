@@ -1,14 +1,14 @@
 {
   "version": {
     "major": 1,
-    "minor": 0,
-    "patch": 1
+    "minor": 1,
+    "patch": 0
   },
   "status": null,
   "build": {
-    "date": "2015.10.5",
+    "date": "2015.11.12",
     "number": 0,
-    "total": 4
+    "total": 11
   },
   "commit": null,
   "json": [
