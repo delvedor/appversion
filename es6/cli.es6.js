@@ -311,8 +311,11 @@ function printHelp () {
               "beta.4"
               "alpha.0"
 
-  Full example:
-  apv version "1.1.0" ignore="somefolder"
+    Full example:
+    apv version "1.1.0" ignore="somefolder"
+
+  Full documentation at:
+  https://github.com/delvedor/appversion
   `)
 }
 
