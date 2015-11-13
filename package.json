@@ -1,6 +1,6 @@
 {
   "name": "appversion",
-  "version": "1.2.3",
+  "version": "1.1.0",
   "description": "A module for keep track the version, build and commit of your javascript application.",
   "main": "index.js",
   "bin": {

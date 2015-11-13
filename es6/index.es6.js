@@ -39,13 +39,14 @@ export function getAppVersion (callback) {
 }
 
 // pattern:
-// M : mayor
-// m : minor
-// p : patch
-// s : status
-// n : build number
-// t : build total
-// d : build Date
+// M : version.major
+// m : version.minor
+// p : version.patch
+// S : status.stage
+// s : status.number
+// n : build.number
+// t : build.total
+// d : build.date
 // c : commit
 // . : separator
 // - : separator
@@ -62,8 +63,10 @@ export function composePatternSync (pattern) {
       ptt += obj.version.minor
     } else if (ele === 'p') {
       ptt += obj.version.patch
+    } else if (ele === 'S') {
+      ptt += obj.status.stage
     } else if (ele === 's') {
-      ptt += obj.status
+      ptt += obj.status.number
     } else if (ele === 'n') {
       ptt += obj.build.number
     } else if (ele === 't') {
@@ -93,8 +96,10 @@ export function composePattern (pattern, callback) {
         ptt += obj.version.minor
       } else if (ele === 'p') {
         ptt += obj.version.patch
+      } else if (ele === 'S') {
+        ptt += obj.status.stage
       } else if (ele === 's') {
-        ptt += obj.status
+        ptt += obj.status.number
       } else if (ele === 'n') {
         ptt += obj.build.number
       } else if (ele === 't') {

@@ -4,7 +4,10 @@
     "minor": 0,
     "patch": 0
   },
-  "status": null,
+  "status": {
+    "stage": null,
+    "number": 0
+  },
   "build": {
     "date": null,
     "number": 0,

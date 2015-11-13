@@ -185,9 +185,14 @@ function setVersion (newVersion, ignore) {
  */
 function setStatus (status) {
   checkType('string', status)
-  if (status !== 'stable' && status !== 'rc' && status !== 'beta' && status !== 'alpha') throw new Error('Insert a valid status string.\n')
-  writeJson('status', status)
-  console.log(`Status updated to ${status}\n`)
+  status = status.split('.')
+  status[1] = Number(status[1]) || 0
+  if (status[0] !== 'stable' && status[0] !== 'rc' && status[0] !== 'beta' && status[0] !== 'alpha' && isNaN(status[1])) throw new Error('Insert a valid status string.\n')
+  writeJson('status', {
+    stage: status[0],
+    number: status[1]
+  })
+  console.log(`Status updated to ${status[0]}.${status[1]}\n`)
 }
 
 /**
@@ -297,6 +302,14 @@ function printHelp () {
               patch
     --------------------------------------------------------
     version   "x.y.z"     ignore="folder1|folder2"
+
+    - If you want set the stage number:
+    cmd       args
+    --------------------------------------------------------
+    status    "stable.1"
+              "rc.2"
+              "beta.4"
+              "alpha.0"
 
   Full example:
   apv version "1.1.0" ignore="somefolder"

@@ -16,7 +16,10 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
     "minor": 0,
     "patch": 0
   },
-  "status": null,
+  "status": {
+    "stage": null,
+    "number": 0
+  },
   "build": {
     "date": null,
     "number": 0,
@@ -87,6 +90,17 @@ If you want to ignore more than one folder just use `|`.
 Full example:  
 `apv version "1.1.0" ignore="folder1|folder2"`
 
+If you want to set the stage number (which is setted by default to 0) you can easily do:
+
+| **cmd** |  **args** |   **description**
+|:-------:|:-----------:|:-------------------------------------:|
+| status  |  "stable.1" |   Set the status to stable1.          |
+|         |  "rc.2"     |   Set the status to rc2.              |
+|         |  "beta.4"   |   Set the status to beta4.            |
+|         |  "alpha.0"  |   Set the status to alpha0.           |
+
+If you don't set any number appversion sets the stage number to zero.
+
 ### In app:
 
 | Function            |       |
@@ -107,17 +121,22 @@ This is the syncronous version, so you don't need to pass a callback to the func
 #### composePattern(pattern, callback)
 Return a string with the version following the pattern you passed as a input.  
 pattern:
-- **M** : mayor
-- **m** : minor
-- **p** : patch
-- **s** : status
-- **n** : build number
-- **t** : build total
-- **d** : build Date
-- **c** : commit
-- **.** : separator
-- **-** : separator
-The pattern must be a string, for example a pattern could be `'M.m.p-s n-d'`.  
+
+| **Pattern** |  **description** |
+|:-----------:|:----------------:|
+| **M**       |  version.major   |
+| **m**       | version.minor    |
+| **p**       | version.patch    |
+| **S**       | status.stage     |
+| **s**       | status.number    |
+| **n**       | build.number     |
+| **t**       | build.total      |
+| **d**       | build.date       |
+| **c**       | commit           |
+| **.**       | separator        |
+| **-**       | separator        |
+
+The pattern must be a string, for example a pattern could be `'M.m.p-Ss n-d'`.  
 This is the asyncronous version, so you must pass a callback to the function.
 
 #### composePatternSync(pattern)
@@ -137,13 +156,13 @@ console.log(apv.getAppVersionSync().version)
 apv.getAppVersion(function (err, data) {
   if (err) console.log(err)
   console.log(data)
-});
+})
 
-console.log(apv.composePatternSync('M.m.p-s n-d'))
+console.log(apv.composePatternSync('M.m.p-Ss n-d'))
 
-apv.composePattern('M.m.p-s n-d', function(ptt) {
+apv.composePattern('M.m.p-Ss n-d', function(ptt) {
   console.log(ptt)
-});
+})
 
 
 // es6 - es2015:
@@ -155,11 +174,11 @@ console.log(getAppVersionSync().version)
 getAppVersion(function (err, data) {
   if (err) console.log(err)
   console.log(data)
-});
+})
 
-console.log(composePatternSync('M.m.p-s n-d'))
+console.log(composePatternSync('M.m.p-Ss n-d'))
 
-composePattern('M.m.p-s n-d', function(ptt) {
+composePattern('M.m.p-Ss n-d', function(ptt) {
   console.log(ptt)
 })
 ```
