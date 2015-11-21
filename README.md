@@ -1,8 +1,8 @@
 # appversion
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
-**appversion** is a **cli tool** for keep track the *version*, *build* and *commit* of your javascript application.  
-Project built following [semver](http://semver.org/) guidelines.
+**appversion** is intended as an extension of *npm version* and is a **cli tool** for keep track the *version*, *build*, *status* and *commit* of your javascript application.  
+The project is built following [semver](http://semver.org/) guidelines.
 
 Usually a project has different configuration/package-manager files, such as *package.json* and/or *bower.json*, and can be really tedious update the project number in every file.  
 Here comes to help appversion, an easy to use command line tool who updates all the files for you.  
@@ -32,7 +32,7 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
   ]
 }
 ```
-As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the ```status``` field, who can assume ```stable|rc|beta|alpha``` value.  
+As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha``` value and ```number```.  
 The last field, ```json```, is the list of the *json files* who appversion must update when you change the version number, is not available via the import.
 
 The code is written in javascript es6 and compiled in es5 via [babel.io](https://babeljs.io/).
@@ -72,7 +72,7 @@ Commands list:
 Usage example:   
 ```$ apv update minor```
 
-By default appversion tries to update all the json file you put in appversion.json
+By default appversion tries to update all the json file you put in the `"json"` field inside appversion.json
 by searching recursively for these files starting from the current working directory.  
 If you want that appversion ignores some folder (it automatically excludes `node_modules` and `bower_component`) just add the ignore argument in this way:  
 `ignore="somefolder"`   
@@ -103,21 +103,24 @@ If you don't set any number appversion sets the stage number to zero.
 
 ### In app:
 
-| Function            |       |
-|---------------------|-------|
-| getAppVersion()     | async |
-| getAppVersionSync() | sync  |
-| compose()           | async |
-| composeSync()       | sync  |
+| Function                                               |       |
+|--------------------------------------------------------|-------|
+| <a href="#getAppVersion">getAppVersion()</a>           | async |
+| <a href="#getAppVersionSync">getAppVersionSync()</a>   | sync  |
+| <a href="#composePattern">composePattern()</a>         | async |
+| <a href="#composePatternSync">composePatternSync()</a> | sync  |
 
+<a name="getAppVersion"></a>
 #### getAppVersion(callback)
 Returns the content of appversion.json as a object.  
 This is the asyncronous version, so you must pass a callback to the function.
 
+<a name="getAppVersionSync"></a>
 #### getAppVersionSync()
 Returns the content of appversion.json as a object.  
 This is the syncronous version, so you don't need to pass a callback to the function.
 
+<a name="composePattern"></a>
 #### composePattern(pattern, callback)
 Return a string with the version following the pattern you passed as a input.  
 pattern:
@@ -139,6 +142,7 @@ pattern:
 The pattern must be a string, for example a pattern could be `'M.m.p-Ss n-d'`.  
 This is the asyncronous version, so you must pass a callback to the function.
 
+<a name="composePatternSync"></a>
 #### composePatternSync(pattern)
 Return a string with the version following the pattern you passed as a input.  
 The pattern string follow the same rules as above.  
@@ -192,6 +196,10 @@ If you are using *npm scripts* you can easily integrate appversion in your workf
 },
 ...
 ```
+## TODO
+- [ ] Integration with GitHub
+- [ ] SHA generator
+- [ ] Update status number
 
 ## Build
 ```
