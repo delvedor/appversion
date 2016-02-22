@@ -14,8 +14,6 @@
     "total": 0
   },
   "commit": null,
-  "json": [
-    "package.json",
-    "bower.json"
-  ]
+  "json": [],
+  "ignore": []
 }
