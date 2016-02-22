@@ -8,21 +8,14 @@
  */
 
 import { readFileSync, readFile } from 'fs'
-import { resolve } from 'path'
-import { platform } from 'os'
+import { resolve, join } from 'path'
 
 const JSON_FILE = 'appversion.json'
-let slash
-if (platform() === 'darwin') {
-  slash = '/'
-} else {
-  slash = '\\'
-}
-let dir = resolve(__dirname).split(`${slash}node_modules`)[0]
+const directory = resolve(__dirname).substring(0, directory.length - 13) // removes '/node_modules'
 
 export function getAppVersionSync () {
   try {
-    let obj = JSON.parse(readFileSync(`${dir}${slash}${JSON_FILE}`))
+    let obj = JSON.parse(readFileSync(join(directory, JSON_FILE)))
     delete obj.json
     return obj
   } catch (err) {
@@ -31,7 +24,7 @@ export function getAppVersionSync () {
 }
 
 export function getAppVersion (callback) {
-  readFile(`${dir}${slash}${JSON_FILE}`, (err, data) => {
+  readFile(join(directory, JSON_FILE), (err, data) => {
     data = JSON.parse(data)
     if (data) delete data.json
     callback(err, data)

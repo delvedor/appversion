@@ -215,7 +215,7 @@ $ ./cli.js <args>
 ## Contributing
 If you feel you can help in any way, be it with examples, extra testing, or new features please open a pull request or open an issue.  
 
-The code follow the Standard code style.  
+The code follows the Standard code style.  
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 
