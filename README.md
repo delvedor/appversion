@@ -26,23 +26,21 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
     "total": 0
   },
   "commit": null,
-  "json": [
-    "package.json",
-    "bower.json"
-  ]
+  "json": [],
+  "ignore": []
 }
 ```
 As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha``` value and ```number```.  
-The last field, ```json```, is the list of the *json files* who appversion must update when you change the version number, is not available via the import.
+The last two fields are, ```json```, is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that appversion must ignore.
 
-The code is written in javascript es6 and compiled in es5 via [babel.io](https://babeljs.io/).
+**Needs Node.js >= 4.0.0**
 
 ## Install
 Install the tool globally:  
 ```npm install appversion -g```
 
 If you want to access the ```appversion.json``` inside your application, install the module also locally:  
-```npm install appversion```
+```npm install appversion --save```
 
 ## Usage
 ### CLI:
@@ -58,48 +56,29 @@ Commands list:
 |         |  build    |   Updates build number.              |
 |         |  commit   |   Updates commit code.               |
 |                                                            |
-| version |  "x.y.z"  |   Sets a specific version number.    |
+| set-version |  x.y.z  |   Sets a specific version number.  |
 |                                                            |
-| status  |  "stable" |   Set the status to stable.          |
-|         |  "rc"     |   Set the status to rc.              |
-|         |  "beta"   |   Set the status to beta.            |
-|         |  "alpha"  |   Set the status to alpha.           |
+| set-status  |  stable |   Set the status to stable.        |
+|         |  rc     |   Set the status to rc.                |
+|         |  beta   |   Set the status to beta.              |
+|         |  alpha  |   Set the status to alpha.             |
 |                                                            |
 | init    |           |   Generates the appversion.json file.|
 |                                                            |
-| help    |           |   Prints the commnds list.           |
+| help    |           |   Prints the commands list.          |
 
-Usage example:   
-```$ apv update minor```
+Some usage examples:   
+```
+$ apv update minor
+$ apv set-version 1.3.2
+$ apv set-status rc.2
+```
 
-By default appversion tries to update all the json file you put in the `"json"` field inside appversion.json
-by searching recursively for these files starting from the current working directory.  
-If you want that appversion ignores some folder (it automatically excludes `node_modules` and `bower_component`) just add the ignore argument in this way:  
-`ignore="somefolder"`   
-If you want to ignore more than one folder just use `|`.  
-`ignore="folder1|folder2"`
+By default, appversion updates the *"version"* field in the `package.json` and `bower.json` files;  
+if you want to update the *"version"* field in more json files, just add the file name inside *appversion.json* in the json array field.
 
-| **cmd** |  **args** |   **args**
-|:-------:|:---------:|:------------------------------------:|
-| update  |  major    |   ignore="somefolder"                |
-|         |  minor    |                                      |
-|         |  patch    |                                      |
-|                                                            |
-| version |  "x.y.z"  |   ignore="somefolder"                |
-
-Full example:  
-`apv version "1.1.0" ignore="folder1|folder2"`
-
-If you want to set the stage number (which is setted by default to 0) you can easily do:
-
-| **cmd** |  **args** |   **description**
-|:-------:|:-----------:|:-------------------------------------:|
-| status  |  "stable.1" |   Set the status to stable1.          |
-|         |  "rc.2"     |   Set the status to rc2.              |
-|         |  "beta.4"   |   Set the status to beta4.            |
-|         |  "alpha.0"  |   Set the status to alpha0.           |
-
-If you don't set any number appversion sets the stage number to zero.
+Appversion searchs recursively inside all the subfolders of your project for json files, by default it ignores `node_modules`, `bower_components` and `.git` folders;  
+if you want to ignore more folders just add the folder name inside *appversion.json* in the ignore array field.
 
 ### In app:
 
@@ -192,24 +171,23 @@ If you are using *npm scripts* you can easily integrate appversion in your workf
 ```json
 ...
 "scripts": {
-  "build": "apv update build && <build command>"
+  "build": "<build command> && apv update build"
 },
 ...
 ```
 ## TODO
+- [x] Update status number
 - [ ] Integration with GitHub
 - [ ] SHA generator
-- [ ] Update status number
+- [ ] Badge generator with the application version for the README.md.
 
 ## Build
 ```
 $ npm install
-$ npm run build:cli
-$ npm run build:index
-$ chmod u+x cli.js
-$ npm run test
+$ chmod u+x apv.js
+$ npm test
 
-$ ./cli.js <args>
+$ ./apv.js <cmd> <args>
 ```
 
 ## Contributing

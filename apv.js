@@ -17,11 +17,11 @@ const walk = require('walk')
 const appversion = require('commander')
 const check = require('type-check').typeCheck
 const helpDocs = `  Semantic Versioning: http://semver.org
-  appversion full documentation at: https://github.com/delvedor/appversion`
+  Appversion documentation: https://github.com/delvedor/appversion`
 
 // Filenames
-const JSON_FILE = 'appversiontest.json'
-const JSON_FILE_DEFAULT = `${__dirname}/appversion.default.json`
+const JSON_FILE = 'appversion.json'
+const JSON_FILE_DEFAULT = resolve(__dirname, 'appversion.default.json')
 
 appversion
   .version('1.2.0')
@@ -67,7 +67,7 @@ function updateVersion (param) {
 
 function updateBuild () {
   let obj = getJsonObj(JSON_FILE)
-  let date = new Date()
+  let date = (new Date()).toString()
   obj.build.date = date
   obj.build.number++
   obj.build.total++
@@ -116,7 +116,7 @@ function setStatus (param) {
   let status = param.split('.')
   if (status[1]) {
     status[1] = Number(status[1])
-    if (check('Number', status[1])) {
+    if (!check('Number', status[1])) {
       console.log('Insert a valid status.number number')
       return
     }
