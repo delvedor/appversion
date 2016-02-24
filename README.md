@@ -74,11 +74,9 @@ $ apv set-version 1.3.2
 $ apv set-status rc.2
 ```
 
-By default, appversion updates the *"version"* field in the `package.json` and `bower.json` files;  
-if you want to update the *"version"* field in more json files, just add the file name inside *appversion.json* in the json array field.
+By default, appversion updates the *"version"* field in the `package.json` and `bower.json` files; if you want to update the *"version"* field in more json files, just add the file name inside *appversion.json* in the json array field.
 
-Appversion searchs recursively inside all the subfolders of your project for json files, by default it ignores `node_modules`, `bower_components` and `.git` folders;  
-if you want to ignore more folders just add the folder name inside *appversion.json* in the ignore array field.
+Appversion searchs recursively inside all the subfolders of your project for json files, by default it ignores `node_modules`, `bower_components` and `.git` folders; if you want to ignore more folders just add the folder name inside *appversion.json* in the ignore array field.
 
 ### In app:
 
@@ -154,14 +152,14 @@ import { getAppVersion, getAppVersionSync, composePattern, composePatternSync } 
 console.log(getAppVersionSync())
 console.log(getAppVersionSync().version)
 
-getAppVersion(function (err, data) {
+getAppVersion((err, data) => {
   if (err) console.log(err)
   console.log(data)
 })
 
 console.log(composePatternSync('M.m.p-Ss n-d'))
 
-composePattern('M.m.p-Ss n-d', function(ptt) {
+composePattern('M.m.p-Ss n-d', (ptt) => {
   console.log(ptt)
 })
 ```

@@ -23,6 +23,7 @@ const helpDocs = `  Semantic Versioning: http://semver.org
 const JSON_FILE = 'appversion.json'
 const JSON_FILE_DEFAULT = resolve(__dirname, 'appversion.default.json')
 
+// commands arguments
 appversion
   .version('1.2.0')
   .usage('<option> <param>')
@@ -31,6 +32,7 @@ appversion
   .option('set-status <param>', 'Sets a specific status, the <param> stage can be stable|rc|beta|alpha and the number must be a number', setStatus)
   .option('init', 'Generates the appversion.json file', init)
 
+// Custom docs
 appversion.on('--help', () => {
   console.log(helpDocs)
 })
@@ -40,8 +42,12 @@ appversion.on('help', () => {
 })
 
 appversion.parse(process.argv)
+// Calls help() if there are no parameters
 if (process.argv.length <= 2) appversion.help()
 
+/**
+ * Calls the correct update function based on the parameter.
+ */
 function update (param) {
   if (!check('String', param)) return
   if (param === 'major' || param === 'minor' || param === 'patch') {
@@ -51,22 +57,31 @@ function update (param) {
   } else if (param === 'commit') {
     updateCommit()
   } else {
-    console.log('Error')
+    console.log('Error, type apv help to get more informations!\n')
   }
 }
 
+/**
+ * Increase the major|minor|patch version number.
+ * @param  {String} version [major|minor|patch]
+ */
 function updateVersion (param) {
   let obj = getJsonObj(JSON_FILE)
   obj.version[param]++
   if (param === 'major') obj.version.minor = obj.version.patch = 0
   if (param === 'minor') obj.version.patch = 0
+  // The build number is reset whenever we update the version number
   obj.build.number = 0
   writeJson(obj, `Version updated to ${obj.version.major}.${obj.version.minor}.${obj.version.patch}\n`)
   writeOtherJson(`${obj.version.major}.${obj.version.minor}.${obj.version.patch}`)
 }
 
+/**
+ * Increase the build number and updates the date.
+ */
 function updateBuild () {
   let obj = getJsonObj(JSON_FILE)
+  // The date is a string representing the Date object
   let date = (new Date()).toString()
   obj.build.date = date
   obj.build.number++
@@ -74,6 +89,9 @@ function updateBuild () {
   writeJson(obj, `Build updated to ${obj.build.number}/${obj.build.total}\n`)
 }
 
+/**
+ * Updates the commit code.
+ */
 function updateCommit () {
   let obj = getJsonObj(JSON_FILE)
   exec('git log --oneline', function (error, stdout) {
@@ -87,6 +105,10 @@ function updateCommit () {
   })
 }
 
+/**
+ * Sets a specific version number.
+ * @param {String} newVersion [version number "x.y.z"]
+ */
 function setVersion (param) {
   if (!check('String', param)) return
   let obj = getJsonObj(JSON_FILE)
@@ -106,10 +128,14 @@ function setVersion (param) {
   obj.version.minor = version[1]
   obj.version.patch = version[2]
   obj.build.number = 0
-  writeJson(obj, `Version changed to ${version[0]}.${version[1]}.${version[2]}\n`)
+  writeJson(obj, `Version updated to ${version[0]}.${version[1]}.${version[2]}\n`)
   writeOtherJson(`${version[0]}.${version[1]}.${version[2]}`)
 }
 
+/**
+ * Sets a specific status.
+ * @param {String} newStatus [status string "stable|rc|beta|alpha"]
+ */
 function setStatus (param) {
   if (!check('String', param)) return
   let obj = getJsonObj(JSON_FILE)
@@ -117,19 +143,23 @@ function setStatus (param) {
   if (status[1]) {
     status[1] = Number(status[1])
     if (!check('Number', status[1])) {
-      console.log('Insert a valid status.number number')
+      console.log('Insert a valid status.number number\n')
       return
     }
   }
   if (status[0] !== 'stable' && status[0] !== 'rc' && status[0] !== 'beta' && status[0] !== 'alpha') {
-    console.log('Insert a valid status.stage string')
+    console.log('Insert a valid status.stage string\n')
     return
   }
   obj.status.stage = status[0]
+  // if there's not the status number, it's setted to zero
   obj.status.number = status[1] || 0
   writeJson(obj, `Status updated to ${status[0]}.${status[1] || 0}\n`)
 }
 
+/**
+ * Creates the appversion file from the default file (one time use).
+ */
 function init () {
   let obj = getJsonObj(JSON_FILE_DEFAULT)
   try {
@@ -137,11 +167,21 @@ function init () {
     let json = `${JSON.stringify(obj, null, 2)}\n`
     fs.writeFileSync(JSON_FILE, json)
     fs.closeSync(fd)
+    console.log('appversion.json created, type apv help to get more informations!\n')
   } catch (err) {
+    if (err.code === 'EEXIST') {
+      console.log('appversion.json already exists, type apv help to get more informations!\n')
+      return
+    }
     throw new Error(err)
   }
 }
 
+/**
+ * Returns the appversion json content.
+ * @param  {String} filename [name of the json]
+ * @return {Object}          [content of the json]
+ */
 function getJsonObj (file) {
   if (!check('String', file)) return
   try {
@@ -151,6 +191,11 @@ function getJsonObj (file) {
   }
 }
 
+/**
+ * Wrote into the json the object passed as argument
+ * @param  {Object} obj [Full object]
+ * @param  {String} message [Optional message]
+ */
 function writeJson (obj, message) {
   if (!check('Object', obj) || !check('String | Undefined', message)) return
   let json = `${JSON.stringify(obj, null, 2)}\n`
@@ -162,15 +207,23 @@ function writeJson (obj, message) {
   }
 }
 
+/**
+ * Extension of the above function.
+ * Updates package.json, bower.json and all other json in appversion.json
+ * @param  {String} version   [version number x.y.z]
+ */
 function writeOtherJson (version) {
   if (!check('String', version)) return
   let obj = getJsonObj(JSON_FILE)
+  // default ignored subfolders
   obj.ignore.push('node_modules', 'bower_components', '.git')
+  // default json files
   obj.json.push('package.json', 'bower.json')
 
   let walker = walk.walk(__dirname, {followLinks: false, filters: obj.ignore})
 
   walker.on('file', function (root, fileStats, next) {
+    // if the filename is inside the appversion's json array
     if (obj.json.indexOf(fileStats.name) > -1) {
       let fileObj
       try {
@@ -178,6 +231,7 @@ function writeOtherJson (version) {
       } catch (err) {
         return
       }
+      // If the "version" field is not present in the json file we add it
       fileObj.version = version
       let json = `${JSON.stringify(fileObj, null, 2)}\n`
       fs.writeFileSync(resolve(root, fileStats.name), json)
