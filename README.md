@@ -1,12 +1,12 @@
-# appversion
+# AppVersion
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
-**appversion** is intended as an extension of *npm version* and is a **cli tool** for keep track the *version*, *build*, *status* and *commit* of your javascript application.  
+**AppVersion** is intended as an extension of *npm version* and is a **cli tool** for keep track the *version*, *build*, *status* and *commit* of your javascript application.  
 The project is built following [semver](http://semver.org/) guidelines.
 
 Usually a project has different configuration/package-manager files, such as *package.json* and/or *bower.json*, and can be really tedious update the project number in every file.  
-Here comes to help appversion, an easy to use command line tool who updates all the files for you.  
-In addition appversion keeps track of the build date and number.
+Here comes to help AppVersion, an easy to use command line tool who updates all the files for you.  
+In addition AppVersion keeps track of the build date and number.
 
 The tool creates a json file named ```appversion.json``` in the root of your project with the following structure:
 ```json
@@ -26,25 +26,33 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
     "total": 0
   },
   "commit": null,
+  "appversion": "x.y.z",
   "json": [],
   "ignore": []
 }
 ```
-As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha``` value and ```number```.  
-The last two fields are, ```json```, is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that appversion must ignore.
+As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha``` (the first letter can be Uppercase) value and ```number```.  
+The ```appversion``` field is used by AppVersion for check if the json is at the latest version.
+The last two fields are, ```json```, is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore.
 
 **Needs Node.js >= 4.0.0**
 
 ## Install
 Install the tool globally:  
-```npm install appversion -g```
+```
+npm install appversion -g
+```
 
 If you want to access the ```appversion.json``` inside your application, install the module also locally:  
-```npm install appversion --save```
+```
+npm install appversion --save
+```
 
 ## Usage
 ### CLI:
-```$ apv <cmd> <args>```  
+```
+$ apv <cmd> <args>
+```  
 
 Commands list:
 
@@ -74,9 +82,10 @@ $ apv set-version 1.3.2
 $ apv set-status rc.2
 ```
 
-By default, appversion updates the *"version"* field in the `package.json` and `bower.json` files; if you want to update the *"version"* field in more json files, just add the file name inside *appversion.json* in the json array field.
+By default, AppVersion updates the *"version"* field in the `package.json` and `bower.json` files; if you want to update the *"version"* field in more json files, just add the file name inside *appversion.json* in the json array field.
 
-Appversion searchs recursively inside all the subfolders of your project for json files, by default it ignores `node_modules`, `bower_components` and `.git` folders; if you want to ignore more folders just add the folder name inside *appversion.json* in the ignore array field.
+AppVersion searchs recursively inside all the subfolders of your project for json files, by default it ignores `node_modules`, `bower_components` and `.git` folders; if you want to ignore more folders just add the folder name inside *appversion.json* in the ignore array field.  
+If you want that AppVersion *ignores all the subfolders* in your project, just put `"*"` inside the ignore array.
 
 ### In app:
 
@@ -104,7 +113,7 @@ pattern:
 
 | **Pattern** |  **description** |
 |:-----------:|:----------------:|
-| **M**       |  version.major   |
+| **M**       | version.major    |
 | **m**       | version.minor    |
 | **p**       | version.patch    |
 | **S**       | status.stage     |
@@ -165,7 +174,7 @@ composePattern('M.m.p-Ss n-d', (ptt) => {
 ```
 
 ## Automating
-If you are using *npm scripts* you can easily integrate appversion in your workflow, below you can find an example of a package.json:
+If you are using *npm scripts* you can easily integrate AppVersion in your workflow, below you can find an example of a package.json:
 ```json
 ...
 "scripts": {

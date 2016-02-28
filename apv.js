@@ -10,6 +10,7 @@
  */
 
 'use strict'
+
 const fs = require('fs')
 const resolve = require('path').resolve
 const exec = require('child_process').exec
@@ -17,7 +18,8 @@ const walk = require('walk')
 const appversion = require('commander')
 const check = require('type-check').typeCheck
 const helpDocs = `  Semantic Versioning: http://semver.org
-  Appversion documentation: https://github.com/delvedor/appversion`
+  AppVersion documentation: https://github.com/delvedor/appversion`
+const apvVersion = '1.2.0'
 
 // Filenames
 const JSON_FILE = 'appversion.json'
@@ -25,7 +27,7 @@ const JSON_FILE_DEFAULT = resolve(__dirname, 'appversion.default.json')
 
 // commands arguments
 appversion
-  .version('1.2.0')
+  .version(apvVersion)
   .usage('<option> <param>')
   .option('update <param>', 'Updates the <param> that can be major|minor|patch|build|commit', update)
   .option('set-version <param>', 'Sets a specific version number, the <param> must be x.y.z', setVersion)
@@ -147,7 +149,8 @@ function setStatus (param) {
       return
     }
   }
-  if (status[0] !== 'stable' && status[0] !== 'rc' && status[0] !== 'beta' && status[0] !== 'alpha') {
+  let match = ['Stable', 'stable', 'RC', 'rc', 'Beta', 'beta', 'Alpha', 'alpha']
+  if (match.indexOf(status[0]) === -1) {
     console.log('Insert a valid status.stage string\n')
     return
   }
@@ -185,7 +188,10 @@ function init () {
 function getJsonObj (file) {
   if (!check('String', file)) return
   try {
-    return JSON.parse(fs.readFileSync(file))
+    let obj = JSON.parse(fs.readFileSync(file))
+    // checks if the appversion.json is at the latest version
+    if (file === JSON_FILE && (!obj.appversion || obj.appversion !== apvVersion)) obj = updateAppversion(obj)
+    return obj
   } catch (err) {
     throw new Error(err)
   }
@@ -215,6 +221,8 @@ function writeJson (obj, message) {
 function writeOtherJson (version) {
   if (!check('String', version)) return
   let obj = getJsonObj(JSON_FILE)
+  // ignore every subfolder in the project
+  if (obj.ignore.indexOf('*') > -1) return
   // default ignored subfolders
   obj.ignore.push('node_modules', 'bower_components', '.git')
   // default json files
@@ -238,4 +246,22 @@ function writeOtherJson (version) {
     }
     next()
   })
+}
+
+/**
+ * This function updates the appversion.json to the latest appversion json structure.
+ * @param  {Object} obj [actual appversion object]
+ * @return {Object}     [correct appversion object]
+ */
+function updateAppversion (obj) {
+  if (!check('Object', obj)) return
+  // if the "ignore" filed is not present in the json we add it
+  if (!obj.ignore) obj.ignore = []
+  // if the "package.json" and "bower.json" are present in the "json" array field, we remove them
+  if (obj.json.indexOf('package.json') > -1) obj.json.splice(obj.json.indexOf('package.json'), 1)
+  if (obj.json.indexOf('bower.json') > -1) obj.json.splice(obj.json.indexOf('bower.json'), 1)
+  // updates the appversion.json version number
+  obj.appversion = apvVersion
+  console.log('appversion.json updated to the latest version.')
+  return obj
 }

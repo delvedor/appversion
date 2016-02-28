@@ -12,40 +12,65 @@
 const fs = require('fs')
 const path = require('path')
 const directory = require('app-root-path').path
+const check = require('type-check').typeCheck
 const JSON_FILE = 'appversion.json'
 
+/**
+ * Returns the content of appversion.json as a object.
+ * Sync version.
+ * @return {Object} [appversion object]
+ */
 function getAppVersionSync () {
   try {
     let obj = JSON.parse(fs.readFileSync(path.join(directory, JSON_FILE)))
     delete obj.json
+    delete obj.ignore
+    delete obj.appversion
     return obj
   } catch (err) {
-    throw new Error(`${JSON_FILE} not found.`)
+    throw new Error(err)
   }
 }
 
+/**
+ * Returns the content of appversion.json as a object.
+ * Async version.
+ * @param  {Function} callback [callback]
+ * @return {Object} [appversion object]
+ */
 function getAppVersion (callback) {
+  if (!check('Function', callback)) throw new Error('getAppVersion() -> callback is not a function')
   fs.readFile(path.join(directory, JSON_FILE), (err, data) => {
     data = JSON.parse(data)
-    if (data) delete data.json
+    if (data) {
+      delete data.json
+      delete data.ignore
+      delete data.appversion
+    }
     callback(err, data)
   })
 }
 
-// pattern:
-// M : version.major
-// m : version.minor
-// p : version.patch
-// S : status.stage
-// s : status.number
-// n : build.number
-// t : build.total
-// d : build.date
-// c : commit
-// . : separator
-// - : separator
+/**
+ * Returns a string with the version following the pattern you passed as a input.
+ * Sync version.
+ * @return {String} [appversion string]
+ *
+ * pattern:
+ * M : version.major
+ * m : version.minor
+ * p : version.patch
+ * S : status.stage
+ * s : status.number
+ * n : build.number
+ * t : build.total
+ * d : build.date
+ * c : commit
+ * . : separator
+ * - : separator
+ */
 function composePatternSync (pattern) {
-  if (typeof pattern !== 'string') throw new Error('compose() -> pattern is not a string')
+  if (!check('String', pattern)) throw new Error('composePatternSync() -> pattern is not a string')
   pattern = pattern.split('')
   let obj = getAppVersionSync()
   let ptt = ''
@@ -76,8 +101,15 @@ function composePatternSync (pattern) {
   return ptt
 }
 
+/**
+ * Returns a string with the version following the pattern you passed as a input.
+ * Async version.
+ * @param  {Function} callback [callback]
+ * @return {String} [appversion string]
+ */
 function composePattern (pattern, callback) {
-  if (typeof pattern !== 'string') throw new Error('compose() -> pattern is not a string')
+  if (!check('String', pattern)) throw new Error('composePattern() -> pattern is not a string')
+  if (!check('Function', callback)) throw new Error('composePattern() -> callback is not a function')
   pattern = pattern.split('')
   getAppVersion((err, obj) => {
     if (err) console.log(err)

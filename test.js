@@ -1,5 +1,3 @@
-'use strict'
-
 /*
  * Project: appversion
  * Version: 1.2.0
@@ -9,13 +7,16 @@
  * GitHub: https://github.com/delvedor/appversion
  */
 
+'use strict'
+
 const test = require('tape')
 const execSync = require('child_process').execSync
+const exec = require('child_process').exec
 const fs = require('fs')
 const JSON_FILE = 'appversion.json'
 
 test('Testing update', (t) => {
-  t.plan(12)
+  t.plan(13)
   const original = JSON.parse(fs.readFileSync(JSON_FILE))
   let mod
 
@@ -49,8 +50,16 @@ test('Testing update', (t) => {
   t.equal(mod.build.number, 0, 'Build number was correctly reset.')
 
   console.log('|- Testing commit')
-  console.log('|-- Test not yet implemented')
-
+  execSync('./apv.js update commit')
+  mod = JSON.parse(fs.readFileSync(JSON_FILE))
+  exec('git log --oneline', function (error, stdout) {
+    if (error) {
+      t.equal(mod.commit, null, 'Commit was correctly updated to null.')
+    } else {
+      t.equal(mod.commit, stdout.substring(0, 7), `Commit was correctly updated to ${stdout.substring(0, 7)}.`)
+    }
+  })
+  // Restore JSON_FILE to the original values.
   fs.writeFileSync(JSON_FILE, JSON.stringify(original, null, 2) + '\n')
 })
 
@@ -84,10 +93,10 @@ test('Testing status', (t) => {
   t.equal(mod.status.stage, 'stable', 'Status.stage stable was correctly updated.')
   t.equal(mod.status.number, 0, 'Status.number stable was correctly updated.')
 
-  console.log('|- Testing status rc.1')
-  execSync('./apv.js set-status rc.1')
+  console.log('|- Testing status RC.1')
+  execSync('./apv.js set-status RC.1')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
-  t.equal(mod.status.stage, 'rc', 'Status.stage rc was correctly updated.')
+  t.equal(mod.status.stage, 'RC', 'Status.stage rc was correctly updated.')
   t.equal(mod.status.number, 1, 'Status.number rc was correctly updated.')
 
   console.log('|- Testing status beta.2')
@@ -96,11 +105,11 @@ test('Testing status', (t) => {
   t.equal(mod.status.stage, 'beta', 'Status.stage beta was correctly updated.')
   t.equal(mod.status.number, 2, 'Status.number beta was correctly updated.')
 
-  console.log('|- Testing status alpha.0')
-  execSync('./apv.js set-status alpha.0')
+  console.log('|- Testing status Alpha.0')
+  execSync('./apv.js set-status Alpha.0')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
-  t.equal(mod.status.stage, 'alpha', 'Status.stage alpha was correctly updated.')
+  t.equal(mod.status.stage, 'Alpha', 'Status.stage alpha was correctly updated.')
   t.equal(mod.status.number, 0, 'Status.number alpha was correctly updated.')
-
+  // Restore JSON_FILE to the original values.
   fs.writeFileSync(JSON_FILE, JSON.stringify(original, null, 2) + '\n')
 })

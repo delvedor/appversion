@@ -2,12 +2,12 @@
   "name": "appversion",
   "version": "1.2.0",
   "description": "An extension of npm version, useful for keep track of the version, build and commit of your javascript application.",
-  "main": "index.js",
+  "main": "appversion.js",
   "bin": {
-    "apv": "cli.js"
+    "apv": "apv.js"
   },
   "scripts": {
-    "pretest": "standard test && standard index.js && standard apv.js",
+    "pretest": "standard test && standard appversion.js && standard apv.js",
     "test": "node test || true"
   },
   "repository": {
