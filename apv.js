@@ -2,7 +2,7 @@
 
 /*
  * Project: appversion
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: delvedor
  * Twitter: @delvedor
  * License: GNU GPLv2
@@ -19,7 +19,7 @@ const appversion = require('commander')
 const check = require('type-check').typeCheck
 const helpDocs = `  Semantic Versioning: http://semver.org
   AppVersion documentation: https://github.com/delvedor/appversion`
-const apvVersion = '1.2.0'
+const apvVersion = '1.2.1'
 
 // Filenames
 const JSON_FILE = 'appversion.json'
@@ -228,7 +228,7 @@ function writeOtherJson (version) {
   // default json files
   obj.json.push('package.json', 'bower.json')
 
-  let walker = walk.walk(__dirname, {followLinks: false, filters: obj.ignore})
+  let walker = walk.walk(resolve('./'), {followLinks: false, filters: obj.ignore})
 
   walker.on('file', function (root, fileStats, next) {
     // if the filename is inside the appversion's json array
