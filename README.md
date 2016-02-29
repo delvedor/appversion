@@ -1,5 +1,6 @@
 # AppVersion
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+<a name="version"></a><a name="status"></a>
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/) [![AppVersion-version](https://img.shields.io/badge/AppVersion-1.3.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-Beta%203-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status)
 
 **AppVersion** is intended as an extension of *npm version* and is a **cli tool** for keep track the *version*, *build*, *status* and *commit* of your javascript application.  
 The project is built following [semver](http://semver.org/) guidelines.
@@ -27,12 +28,14 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
   },
   "commit": null,
   "appversion": "x.y.z",
+  "markdown": [],
   "json": [],
   "ignore": []
 }
 ```
 As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha``` (the first letter can be Uppercase) value and ```number```.  
-The ```appversion``` field is used by AppVersion for check if the json is at the latest version.
+The ```appversion``` field is used by AppVersion for check if the json is at the latest version.  
+Inside the ```markdown``` field you can put all the markdown files that you want to keep updated. See <a href="#generateBadge">here</a> for more information.  
 The last two fields are, ```json```, is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore.
 
 **Needs Node.js >= 4.0.0**
@@ -57,7 +60,7 @@ $ apv <cmd> <args>
 Commands list:
 
 | **cmd** |  **args** |   **description**
-|:-------:|:---------:|:------------------------------------:|
+|:-------|:---------|:------------------------------------|
 | update  |  major    |   Updates major number.              |
 |         |  minor    |   Updates minor number.              |
 |         |  patch    |   Updates patch number.              |
@@ -71,6 +74,8 @@ Commands list:
 |         |  beta   |   Set the status to beta.              |
 |         |  alpha  |   Set the status to alpha.             |
 |                                                            |
+| generate-version-badge    |   |   Generates the .md code of a shield badge with the version of your application.|
+| generate-version-badge    |   |   Generates the .md code of a shield badge with the status of your application.|
 | init    |           |   Generates the appversion.json file.|
 |                                                            |
 | help    |           |   Prints the commands list.          |
@@ -84,8 +89,12 @@ $ apv set-status rc.2
 
 By default, AppVersion updates the *"version"* field in the `package.json` and `bower.json` files; if you want to update the *"version"* field in more json files, just add the file name inside *appversion.json* in the json array field.
 
-AppVersion searchs recursively inside all the subfolders of your project for json files, by default it ignores `node_modules`, `bower_components` and `.git` folders; if you want to ignore more folders just add the folder name inside *appversion.json* in the ignore array field.  
+AppVersion looks recursively inside all the subfolders of your project for json files, by default it ignores `node_modules`, `bower_components` and `.git` folders; if you want to ignore more folders just add the folder name inside *appversion.json* in the ignore array field.  
 If you want that AppVersion *ignores all the subfolders* in your project, just put `"*"` inside the ignore array.
+
+<a name="generateBadge"></a>
+AppVersion can provide you a wonderful shield badge with the version of your application that you can put in you .md file, like what you see at the top of this file.  
+Generate the badge is very easy, just type ```apv generate-version-badge``` for the version badge and ```apv generate-status-badge``` for the status badge and copy the output inside your .md file, then add the name of the md file (with the extension) inside the markdown array field in *appversion.json*, from now AppVersion will keep updated the badges every time you update your application.
 
 ### In app:
 
@@ -112,7 +121,7 @@ Return a string with the version following the pattern you passed as a input.
 pattern:
 
 | **Pattern** |  **description** |
-|:-----------:|:----------------:|
+|:-----------|:----------------|
 | **M**       | version.major    |
 | **m**       | version.minor    |
 | **p**       | version.patch    |
@@ -184,9 +193,9 @@ If you are using *npm scripts* you can easily integrate AppVersion in your workf
 ```
 ## TODO
 - [x] Update status number
+- [x] Badge generator with the application version for the README.md.
 - [ ] Integration with GitHub
 - [ ] SHA generator
-- [ ] Badge generator with the application version for the README.md.
 
 ## Build
 ```

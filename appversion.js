@@ -1,6 +1,6 @@
 /*
  * Project: appversion
- * Version: 1.2.1
+ * Version: 1.3.0
  * Author: delvedor
  * Twitter: @delvedor
  * License: GNU GPLv2
@@ -25,6 +25,7 @@ function getAppVersionSync () {
     let obj = JSON.parse(fs.readFileSync(path.join(directory, JSON_FILE)))
     delete obj.json
     delete obj.ignore
+    delete obj.markdown
     delete obj.appversion
     return obj
   } catch (err) {
@@ -45,6 +46,7 @@ function getAppVersion (callback) {
     if (data) {
       delete data.json
       delete data.ignore
+      delete data.markdown
       delete data.appversion
     }
     callback(err, data)
