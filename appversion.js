@@ -57,49 +57,15 @@ function getAppVersion (callback) {
  * Returns a string with the version following the pattern you passed as a input.
  * Sync version.
  * @return {String} [appversion string]
- *
- * pattern:
- * M : version.major
- * m : version.minor
- * p : version.patch
- * S : status.stage
- * s : status.number
- * n : build.number
- * t : build.total
- * d : build.date
- * c : commit
- * . : separator
- * - : separator
  */
 function composePatternSync (pattern) {
   if (!check('String', pattern)) throw new Error('composePatternSync() -> pattern is not a string')
   pattern = pattern.split('')
   let obj = getAppVersionSync()
   let ptt = ''
-  for (let i = 0; i < pattern.length; i++) {
-    let ele = pattern[i]
-    if (ele === 'M') {
-      ptt += obj.version.major
-    } else if (ele === 'm') {
-      ptt += obj.version.minor
-    } else if (ele === 'p') {
-      ptt += obj.version.patch
-    } else if (ele === 'S') {
-      ptt += obj.status.stage
-    } else if (ele === 's') {
-      ptt += obj.status.number
-    } else if (ele === 'n') {
-      ptt += obj.build.number
-    } else if (ele === 't') {
-      ptt += obj.build.total
-    } else if (ele === 'd') {
-      ptt += obj.build.date
-    } else if (ele === 'c') {
-      ptt += obj.commit
-    } else {
-      ptt += ele
-    }
-  }
+  pattern.map((ele) => {
+    ptt += switchPattern(obj, ele)
+  })
   return ptt
 }
 
@@ -116,32 +82,57 @@ function composePattern (pattern, callback) {
   getAppVersion((err, obj) => {
     if (err) console.log(err)
     let ptt = ''
-    for (let i = 0; i < pattern.length; i++) {
-      let ele = pattern[i]
-      if (ele === 'M') {
-        ptt += obj.version.major
-      } else if (ele === 'm') {
-        ptt += obj.version.minor
-      } else if (ele === 'p') {
-        ptt += obj.version.patch
-      } else if (ele === 'S') {
-        ptt += obj.status.stage
-      } else if (ele === 's') {
-        ptt += obj.status.number
-      } else if (ele === 'n') {
-        ptt += obj.build.number
-      } else if (ele === 't') {
-        ptt += obj.build.total
-      } else if (ele === 'd') {
-        ptt += obj.build.date
-      } else if (ele === 'c') {
-        ptt += obj.commit
-      } else {
-        ptt += ele
-      }
-    }
+    pattern.map((ele) => {
+      ptt += switchPattern(obj, ele)
+    })
     callback(ptt)
   })
+}
+
+/**
+ * Returns the correspondent obj parameter, if not, it returns the given pattern.
+ * @param  {Object} obj     [appversion object]
+ * @param  {String} pattern [pattern]
+ * @return {String}         [correspondent pattern]
+ *
+ * pattern:
+ * M : version.major
+ * m : version.minor
+ * p : version.patch
+ * S : status.stage
+ * s : status.number
+ * n : build.number
+ * t : build.total
+ * d : build.date
+ * c : commit
+ * . : separator
+ * - : separator
+ */
+function switchPattern (obj, pattern) {
+  if (!check('String', pattern)) throw new Error('switchPattern() -> pattern is not a string')
+  if (!check('Object', obj)) throw new Error('switchPattern() -> obj is not an object')
+  switch (pattern) {
+    case 'M':
+      return obj.version.major
+    case 'm':
+      return obj.version.minor
+    case 'p':
+      return obj.version.patch
+    case 'S':
+      return obj.status.stage
+    case 's':
+      return obj.status.number
+    case 'n':
+      return obj.build.number
+    case 't':
+      return obj.build.total
+    case 'd':
+      return obj.build.date
+    case 'c':
+      return obj.commit
+    default:
+      return pattern
+  }
 }
 
 exports.getAppVersionSync = getAppVersionSync

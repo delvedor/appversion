@@ -13,6 +13,7 @@ const test = require('tape')
 const execSync = require('child_process').execSync
 const exec = require('child_process').exec
 const fs = require('fs')
+const apv = require('./appversion')
 const JSON_FILE = 'appversion.json'
 
 test('Testing update', (t) => {
@@ -168,4 +169,33 @@ ${readmeCode}
   // Restore JSON_FILE and README.md to the original values
   fs.writeFileSync('README.md', readme)
   fs.writeFileSync(JSON_FILE, JSON.stringify(original, null, 2) + '\n')
+})
+
+test('Testing appversion.js', (t) => {
+  t.plan(4)
+  const original = JSON.parse(fs.readFileSync(JSON_FILE))
+  const obj = {
+    version: original.version,
+    status: original.status,
+    build: original.build,
+    commit: original.commit
+  }
+  const ptt = `${original.version.major}.${original.version.minor}.${original.version.patch}.${original.status.stage}.${original.status.number}.${original.build.number}.${original.build.total}.${original.build.date}.${original.commit}`
+
+  console.log('|- Testing appversion.getAppVersionSync')
+  t.deepEqual(apv.getAppVersionSync(), obj, 'appversion.getAppVersionSync works correctly!')
+
+  console.log('|- Testing appversion.composePatternSync')
+  t.equal(apv.composePatternSync('M.m.p.S.s.n.t.d.c'), ptt, 'appversion.composePatternSync works correctly!')
+
+  console.log('|- Testing appversion.getAppVersion')
+  apv.getAppVersion((err, data) => {
+    if (err) console.log(err)
+    t.deepEqual(data, obj, 'appversion.getAppVersion works correctly!')
+  })
+
+  console.log('|- Testing appversion.composePattern')
+  apv.composePattern('M.m.p.S.s.n.t.d.c', (data) => {
+    t.equal(data, ptt, 'appversion.composePattern works correctly!')
+  })
 })

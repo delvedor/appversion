@@ -25,6 +25,11 @@ const apvVersion = '1.3.0'
 const JSON_FILE = 'appversion.json'
 const JSON_FILE_DEFAULT = resolve(__dirname, 'appversion.default.json')
 
+// Functional functions expressions
+const shieldUrl = (part) => `https://img.shields.io/badge/${part}-brightgreen.svg?style=flat`
+const mdCode = (tag, url) => `[![AppVersion-${tag}](${url})](https://github.com/delvedor/appversion?#${tag})`
+const composeReadmeCode = (tag, part) => mdCode(tag, shieldUrl(part))
+
 // commands arguments
 appversion
   .version(apvVersion)
@@ -168,15 +173,15 @@ function setStatus (param) {
 function createVersionBadge (updateMD) {
   if (!check('Boolean | Undefined', updateMD)) return
   let obj = getJsonObj(JSON_FILE)
-  // compose the badge url
-  let url = `https://img.shields.io/badge/AppVersion-${obj.version.major}.${obj.version.minor}.${obj.version.patch}-brightgreen.svg?style=flat`
-  // compose the badge .md code
-  let readmeCode = `[![AppVersion-version](${url})](https://github.com/delvedor/appversion?#version)`
   if (updateMD) {
-    for (let i = 0, len = obj.markdown.length; i < len; i++) {
-      appendBadgeToMD(url, obj.markdown[i], '[![AppVersion-version]', '?#version')
-    }
+    // compose the url
+    let url = shieldUrl(`AppVersion-${obj.version.major}.${obj.version.minor}.${obj.version.patch}`)
+    obj.markdown.map((file) => {
+      return appendBadgeToMD(url, file, '[![AppVersion-version]', '?#version')
+    })
   } else {
+    // compose the badge .md code
+    let readmeCode = composeReadmeCode('version', `AppVersion-${obj.version.major}.${obj.version.minor}.${obj.version.patch}`)
     console.log(`Version badge generated!
 
 ${readmeCode}
@@ -192,16 +197,17 @@ ${readmeCode}
 function createStatusBadge (updateMD) {
   if (!check('Boolean | Undefined', updateMD)) return
   let obj = getJsonObj(JSON_FILE)
-  // compose the badge url
+  // If the status.number is zero is not displayed
   let status = obj.status.number > 0 ? `${obj.status.stage}%20${obj.status.number}` : obj.status.stage
-  let url = `https://img.shields.io/badge/Status-${status}-brightgreen.svg?style=flat`
-  // compose the badge .md code
-  let readmeCode = `[![AppVersion-status](${url})](https://github.com/delvedor/appversion?#status)`
   if (updateMD) {
-    for (let i = 0, len = obj.markdown.length; i < len; i++) {
-      appendBadgeToMD(url, obj.markdown[i], '[![AppVersion-status]', '?#status')
-    }
+    // compose the url
+    let url = shieldUrl(`Status-${status}`)
+    obj.markdown.map((file) => {
+      return appendBadgeToMD(url, file, '[![AppVersion-status]', '?#status')
+    })
   } else {
+    // compose the badge .md code
+    let readmeCode = composeReadmeCode('status', `Status-${status}`)
     console.log(`Status badge generated!
 
 ${readmeCode}
