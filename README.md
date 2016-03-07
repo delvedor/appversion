@@ -1,6 +1,5 @@
-<a name="version"></a><a name="status"></a>
-# AppVersion
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/) [![AppVersion-version](https://img.shields.io/badge/AppVersion-1.3.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-Beta%203-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status)
+# AppVersion <a name="version"></a><a name="status"></a>
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/) [![AppVersion-version](https://img.shields.io/badge/AppVersion-1.3.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status)
 
 **AppVersion** is intended as an extension of *npm version* and is a **cli tool** for keep track the *version*, *build*, *status* and *commit* of your javascript application.  
 The project is built following [semver](http://semver.org/) guidelines.
@@ -27,16 +26,18 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
     "total": 0
   },
   "commit": null,
-  "appversion": "x.y.z",
-  "markdown": [],
-  "json": [],
-  "ignore": []
+  "config": {
+    "appversion": "x.y.z",
+    "markdown": [],
+    "json": [],
+    "ignore": []
+  }
 }
 ```
 As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha``` (the first letter can be Uppercase) value and ```number```.  
-The ```appversion``` field is used by AppVersion for check if the json is at the latest version.  
-Inside the ```markdown``` field you can put all the markdown files that you want to keep updated. See <a href="#generateBadge">here</a> for more information.  
-The last two fields are, ```json```, is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore.
+
+Then, there's the ```config``` filed, divided in ```appversion```, that is used by AppVersion for check if the json is at the latest version, ```markdown``` field where you can put all the markdown files that you want to keep updated (see <a href="#generateBadge">here</a> for more information).  
+The last two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore.
 
 **Needs Node.js >= 4.0.0**
 
@@ -194,6 +195,7 @@ If you are using *npm scripts* you can easily integrate AppVersion in your workf
 ## TODO
 - [x] Update status number
 - [x] Badge generator with the application version for the README.md.
+- [x] Move `json`, `markdown`, `ignore` and `appversion` inside `config` field
 - [ ] Integration with GitHub
 - [ ] SHA generator
 
@@ -210,6 +212,7 @@ $ ./apv.js <cmd> <args>
 If you feel you can help in any way, be it with examples, extra testing, or new features please open a pull request or open an issue.  
 
 The code follows the Standard code style.  
+
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 

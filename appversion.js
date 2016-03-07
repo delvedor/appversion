@@ -23,10 +23,7 @@ const JSON_FILE = 'appversion.json'
 function getAppVersionSync () {
   try {
     let obj = JSON.parse(fs.readFileSync(path.join(directory, JSON_FILE)))
-    delete obj.json
-    delete obj.ignore
-    delete obj.markdown
-    delete obj.appversion
+    delete obj.config
     return obj
   } catch (err) {
     throw new Error(err)
@@ -43,12 +40,7 @@ function getAppVersion (callback) {
   if (!check('Function', callback)) throw new Error('getAppVersion() -> callback is not a function')
   fs.readFile(path.join(directory, JSON_FILE), (err, data) => {
     data = JSON.parse(data)
-    if (data) {
-      delete data.json
-      delete data.ignore
-      delete data.markdown
-      delete data.appversion
-    }
+    if (data) delete data.config
     callback(err, data)
   })
 }

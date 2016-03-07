@@ -124,6 +124,7 @@ test('Testing status', (t) => {
 test('Testing badge', (t) => {
   t.plan(4)
   const readme = fs.readFileSync('README.md', 'utf8')
+  const packagejson = fs.readFileSync('package.json', 'utf8')
   const original = JSON.parse(fs.readFileSync(JSON_FILE))
 
   console.log('|- Testing update version md file')
@@ -169,6 +170,8 @@ ${readmeCode}
   // Restore JSON_FILE and README.md to the original values
   fs.writeFileSync('README.md', readme)
   fs.writeFileSync(JSON_FILE, JSON.stringify(original, null, 2) + '\n')
+  // Restore package.json
+  fs.writeFileSync('package.json', packagejson)
 })
 
 test('Testing appversion.js', (t) => {

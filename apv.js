@@ -176,7 +176,7 @@ function createVersionBadge (updateMD) {
   if (updateMD) {
     // compose the url
     let url = shieldUrl(`AppVersion-${obj.version.major}.${obj.version.minor}.${obj.version.patch}`)
-    obj.markdown.map((file) => {
+    obj.config.markdown.map((file) => {
       return appendBadgeToMD(url, file, '[![AppVersion-version]', '?#version')
     })
   } else {
@@ -202,7 +202,7 @@ function createStatusBadge (updateMD) {
   if (updateMD) {
     // compose the url
     let url = shieldUrl(`Status-${status}`)
-    obj.markdown.map((file) => {
+    obj.config.markdown.map((file) => {
       return appendBadgeToMD(url, file, '[![AppVersion-status]', '?#status')
     })
   } else {
@@ -269,7 +269,7 @@ function getJsonObj (file) {
   try {
     let obj = JSON.parse(fs.readFileSync(resolve('./', file)))
     // checks if the appversion.json is at the latest version
-    if (file === JSON_FILE && (!obj.appversion || obj.appversion !== apvVersion)) obj = updateAppversion(obj)
+    if (file === JSON_FILE && (!obj.config || obj.config.appversion !== apvVersion)) obj = updateAppversion(obj)
     return obj
   } catch (err) {
     if (err.code === 'ENOENT') {
@@ -306,17 +306,17 @@ function writeOtherJson (version) {
   if (!check('String', version)) return
   let obj = getJsonObj(JSON_FILE)
   // ignore every subfolder in the project
-  if (obj.ignore.indexOf('*') > -1) return
+  if (obj.config.ignore.indexOf('*') > -1) return
   // default ignored subfolders
-  obj.ignore.push('node_modules', 'bower_components', '.git')
+  obj.config.ignore.push('node_modules', 'bower_components', '.git')
   // default json files
-  obj.json.push('package.json', 'bower.json')
+  obj.config.json.push('package.json', 'bower.json')
 
-  let walker = walk.walk(resolve('./'), {followLinks: false, filters: obj.ignore})
+  let walker = walk.walk(resolve('./'), {followLinks: false, filters: obj.config.ignore})
 
   walker.on('file', function (root, fileStats, next) {
     // if the filename is inside the appversion's json array
-    if (obj.json.indexOf(fileStats.name) > -1) {
+    if (obj.config.json.indexOf(fileStats.name) > -1) {
       let fileObj
       try {
         fileObj = JSON.parse(fs.readFileSync(resolve(root, fileStats.name)))
@@ -339,15 +339,30 @@ function writeOtherJson (version) {
  */
 function updateAppversion (obj) {
   if (!check('Object', obj)) return
-  // if the "ignore" filed is not present in the json we add it
-  if (!obj.ignore) obj.ignore = []
-  // if the "markdown" filed is not present in the json we add it
-  if (!obj.markdown) obj.markdown = []
-  // if the "package.json" and "bower.json" are present in the "json" array field, we remove them
-  if (obj.json.indexOf('package.json') > -1) obj.json.splice(obj.json.indexOf('package.json'), 1)
-  if (obj.json.indexOf('bower.json') > -1) obj.json.splice(obj.json.indexOf('bower.json'), 1)
+  // if the "config" filed is not present in the json we add it
+  if (!obj.config) obj.config = { appversion: apvVersion, ignore: [], markdown: [], json: [] }
+  // if the "ignore" filed is present in the json we move it to config
+  if (obj.ignore) {
+    obj.config.ignore = obj.ignore
+    delete obj.ignore
+  }
+  // if the "markdown" filed is present in the json we move it to config
+  if (obj.markdown) {
+    obj.config.markdown = obj.markdown
+    delete obj.markdown
+  }
+  // if the "markdown" filed is present in the json we move it to config
+  if (obj.json) {
+    obj.config.json = obj.json
+    delete obj.json
+  }
+  // if the "package.json" and "bower.json" are present in the "config.json" array field, we remove them
+  if (obj.config.json.indexOf('package.json') > -1) obj.config.json.splice(obj.config.json.indexOf('package.json'), 1)
+  if (obj.config.json.indexOf('bower.json') > -1) obj.config.json.splice(obj.config.json.indexOf('bower.json'), 1)
+  // Remove the appversion field
+  if (obj.appversion) delete obj.appversion
   // updates the appversion.json version number
-  obj.appversion = apvVersion
+  obj.config.appversion = apvVersion
   console.log('appversion.json updated to the latest version.\n')
   return obj
 }

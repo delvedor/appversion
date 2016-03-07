@@ -14,8 +14,10 @@
     "total": 0
   },
   "commit": null,
-  "appversion": "1.3.0",
-  "markdown": [],
-  "json": [],
-  "ignore": []
+  "config": {
+    "appversion": "1.3.0",
+    "markdown": [],
+    "json": [],
+    "ignore": []
+  }
 }
