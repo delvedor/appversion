@@ -1,0 +1,10 @@
+.DS_Store
+.gitignore
+node_modules
+npm-debug.log
+testfolder
+test.js
+appversion.json
+LICENSE
+CHANGELOG.md
+README.md

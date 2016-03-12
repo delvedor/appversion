@@ -1,13 +1,13 @@
 {
   "name": "appversion",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "An extension of npm version, useful for keep track of the version, build and commit of your javascript application.",
   "main": "appversion.js",
   "bin": {
     "apv": "apv.js"
   },
   "scripts": {
-    "pretest": "standard test && standard appversion.js && standard apv.js",
+    "pretest": "standard",
     "test": "node test || true"
   },
   "repository": {
@@ -29,12 +29,15 @@
   },
   "homepage": "https://github.com/delvedor/appversion",
   "devDependencies": {
-    "standard": "^6.0.7",
-    "tape": "^4.2.0"
+    "standard": "^6.0.8",
+    "tape": "^4.5.1"
   },
   "dependencies": {
     "app-root-path": "^1.0.0",
+    "chalk": "^1.1.1",
     "commander": "^2.9.0",
+    "request": "^2.69.0",
+    "semver": "^5.1.0",
     "type-check": "^0.3.2",
     "walk": "^2.3.9"
   }

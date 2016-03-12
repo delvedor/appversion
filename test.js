@@ -1,6 +1,6 @@
 /*
  * Project: appversion
- * Version: 1.3.0
+ * Version: 1.4.0
  * Author: delvedor
  * Twitter: @delvedor
  * License: GNU GPLv2
@@ -9,41 +9,45 @@
 
 'use strict'
 
+// Modules
 const test = require('tape')
 const execSync = require('child_process').execSync
 const exec = require('child_process').exec
 const fs = require('fs')
+const chalk = require('chalk')
+// apv parameters and functions
 const apv = require('./appversion')
 const JSON_FILE = 'appversion.json'
 
-test('Testing update', (t) => {
+test(chalk.cyan.bold('Testing update'), (t) => {
   t.plan(13)
   const original = JSON.parse(fs.readFileSync(JSON_FILE))
   const readme = fs.readFileSync('README.md', 'utf8')
   let mod
 
-  console.log('|- Testing build')
+  console.log(chalk.cyan('|- Testing build'))
   execSync('./apv.js update build')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
+  // Sometimes this test fails, because the seconds value can change.
   let date = (new Date()).toString()
   t.equal(mod.build.number, original.build.number + 1, 'Build number was correctly updated.')
   t.equal(mod.build.total, original.build.total + 1, 'Build total was correctly updated.')
   t.equal(mod.build.date, date, 'Date was correctly updated.')
 
-  console.log('|- Testing patch')
+  console.log(chalk.cyan('|- Testing patch'))
   execSync('./apv.js update patch')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   t.equal(mod.version.patch, original.version.patch + 1, 'Patch was correctly updated.')
   t.equal(mod.build.number, 0, 'Build number was correctly reset.')
 
-  console.log('|- Testing minor')
+  console.log(chalk.cyan('|- Testing minor'))
   execSync('./apv.js update minor')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   t.equal(mod.version.minor, original.version.minor + 1, 'Minor was correctly updated.')
   t.equal(mod.version.patch, 0, 'Patch was correctly reset.')
   t.equal(mod.build.number, 0, 'Build number was correctly reset.')
 
-  console.log('|- Testing major')
+  console.log(chalk.cyan('|- Testing major'))
   execSync('./apv.js update major')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   t.equal(mod.version.major, original.version.major + 1, 'Major was correctly updated.')
@@ -51,7 +55,7 @@ test('Testing update', (t) => {
   t.equal(mod.version.patch, 0, 'Patch was correctly reset.')
   t.equal(mod.build.number, 0, 'Build number was correctly reset.')
 
-  console.log('|- Testing commit')
+  console.log(chalk.cyan('|- Testing commit'))
   execSync('./apv.js update commit')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   exec('git log --oneline', function (err, stdout) {
@@ -66,13 +70,13 @@ test('Testing update', (t) => {
   fs.writeFileSync('README.md', readme)
 })
 
-test('Testing version', (t) => {
+test(chalk.cyan.bold('Testing version'), (t) => {
   t.plan(2)
   const original = JSON.parse(fs.readFileSync(JSON_FILE))
   const readme = fs.readFileSync('README.md', 'utf8')
   let mod
 
-  console.log('|- Testing version 1.2.3')
+  console.log(chalk.cyan('|- Testing version 1.2.3'))
   execSync('./apv.js set-version 1.2.3')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   t.deepEqual(mod.version, {
@@ -87,31 +91,31 @@ test('Testing version', (t) => {
   fs.writeFileSync('README.md', readme)
 })
 
-test('Testing status', (t) => {
+test(chalk.cyan.bold('Testing status'), (t) => {
   t.plan(8)
   const original = JSON.parse(fs.readFileSync(JSON_FILE))
   const readme = fs.readFileSync('README.md', 'utf8')
   let mod
 
-  console.log('|- Testing status stable')
+  console.log(chalk.cyan('|- Testing status stable'))
   execSync('./apv.js set-status stable')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   t.equal(mod.status.stage, 'stable', 'Status.stage stable was correctly updated.')
   t.equal(mod.status.number, 0, 'Status.number stable was correctly updated.')
 
-  console.log('|- Testing status RC.1')
+  console.log(chalk.cyan('|- Testing status RC.1'))
   execSync('./apv.js set-status RC.1')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   t.equal(mod.status.stage, 'RC', 'Status.stage rc was correctly updated.')
   t.equal(mod.status.number, 1, 'Status.number rc was correctly updated.')
 
-  console.log('|- Testing status beta.2')
+  console.log(chalk.cyan('|- Testing status beta.2'))
   execSync('./apv.js set-status beta.2')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   t.equal(mod.status.stage, 'beta', 'Status.stage beta was correctly updated.')
   t.equal(mod.status.number, 2, 'Status.number beta was correctly updated.')
 
-  console.log('|- Testing status Alpha.0')
+  console.log(chalk.cyan('|- Testing status Alpha.0'))
   execSync('./apv.js set-status Alpha.0')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
   t.equal(mod.status.stage, 'Alpha', 'Status.stage alpha was correctly updated.')
@@ -121,49 +125,47 @@ test('Testing status', (t) => {
   fs.writeFileSync('README.md', readme)
 })
 
-test('Testing badge', (t) => {
+test(chalk.cyan.bold('Testing badge'), (t) => {
   t.plan(4)
   const readme = fs.readFileSync('README.md', 'utf8')
   const packagejson = fs.readFileSync('package.json', 'utf8')
   const original = JSON.parse(fs.readFileSync(JSON_FILE))
 
-  console.log('|- Testing update version md file')
+  console.log(chalk.cyan('|- Testing update version md file'))
   execSync('./apv.js set-version 1.2.3')
   let readmeMod = fs.readFileSync('README.md', 'utf8')
   let url = 'https://img.shields.io/badge/AppVersion-1.2.3-brightgreen.svg?style=flat'
   let readmeExpected = `${readmeMod.substring(0, readmeMod.indexOf('[![AppVersion-version]'))}[![AppVersion-version](${url})]${readmeMod.substring(readmeMod.indexOf('(https://github.com/delvedor/appversion?#version)'))}`
   t.equal(readmeMod, readmeExpected, 'Update version badge works correctly!')
 
-  console.log('|- Testing update status md file')
+  console.log(chalk.cyan('|- Testing update status md file'))
   execSync('./apv.js set-status beta.2')
   readmeMod = fs.readFileSync('README.md', 'utf8')
   url = 'https://img.shields.io/badge/Status-beta%202-brightgreen.svg?style=flat'
   readmeExpected = `${readmeMod.substring(0, readmeMod.indexOf('[![AppVersion-status]'))}[![AppVersion-status](${url})]${readmeMod.substring(readmeMod.indexOf('(https://github.com/delvedor/appversion?#status)'))}`
   t.equal(readmeMod, readmeExpected, 'Update status badge works correctly!')
 
-  console.log('|- Testing generate-version-badge')
-  exec('./apv.js generate-version-badge', (err, stdout) => {
+  console.log(chalk.cyan('|- Testing generate-badge version'))
+  exec('./apv.js generate-badge version', (err, stdout) => {
     if (err) console.log(err)
     let url = `https://img.shields.io/badge/AppVersion-${original.version.major}.${original.version.minor}.${original.version.patch}-brightgreen.svg?style=flat`
     let readmeCode = `[![AppVersion-version](${url})](https://github.com/delvedor/appversion?#version)`
-    let expectedOutput = `Version badge generated!
+    let expectedOutput = `\nAppVersion: version badge generated!
 
 ${readmeCode}
-
   \n`
     t.equal(stdout, expectedOutput, 'Generate version badge works correctly!')
   })
 
-  console.log('|- Testing generate-status-badge')
-  exec('./apv.js generate-status-badge', (err, stdout) => {
+  console.log(chalk.cyan('|- Testing generate-badge status'))
+  exec('./apv.js generate-badge status', (err, stdout) => {
     if (err) console.log(err)
     let status = original.status.number > 0 ? `${original.status.stage}%20${original.status.number}` : original.status.stage
     let url = `https://img.shields.io/badge/Status-${status}-brightgreen.svg?style=flat`
     let readmeCode = `[![AppVersion-status](${url})](https://github.com/delvedor/appversion?#status)`
-    let expectedOutput = `Status badge generated!
+    let expectedOutput = `\nAppVersion: status badge generated!
 
 ${readmeCode}
-
   \n`
     t.equal(stdout, expectedOutput, 'Generate status badge works correctly!')
   })
@@ -174,7 +176,7 @@ ${readmeCode}
   fs.writeFileSync('package.json', packagejson)
 })
 
-test('Testing appversion.js', (t) => {
+test(chalk.cyan.bold('Testing appversion.js'), (t) => {
   t.plan(4)
   const original = JSON.parse(fs.readFileSync(JSON_FILE))
   const obj = {
@@ -185,19 +187,19 @@ test('Testing appversion.js', (t) => {
   }
   const ptt = `${original.version.major}.${original.version.minor}.${original.version.patch}.${original.status.stage}.${original.status.number}.${original.build.number}.${original.build.total}.${original.build.date}.${original.commit}`
 
-  console.log('|- Testing appversion.getAppVersionSync')
+  console.log(chalk.cyan('|- Testing appversion.getAppVersionSync'))
   t.deepEqual(apv.getAppVersionSync(), obj, 'appversion.getAppVersionSync works correctly!')
 
-  console.log('|- Testing appversion.composePatternSync')
+  console.log(chalk.cyan('|- Testing appversion.composePatternSync'))
   t.equal(apv.composePatternSync('M.m.p.S.s.n.t.d.c'), ptt, 'appversion.composePatternSync works correctly!')
 
-  console.log('|- Testing appversion.getAppVersion')
+  console.log(chalk.cyan('|- Testing appversion.getAppVersion'))
   apv.getAppVersion((err, data) => {
     if (err) console.log(err)
     t.deepEqual(data, obj, 'appversion.getAppVersion works correctly!')
   })
 
-  console.log('|- Testing appversion.composePattern')
+  console.log(chalk.cyan('|- Testing appversion.composePattern'))
   apv.composePattern('M.m.p.S.s.n.t.d.c', (data) => {
     t.equal(data, ptt, 'appversion.composePattern works correctly!')
   })

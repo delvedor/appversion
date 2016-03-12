@@ -1,6 +1,6 @@
 /*
  * Project: appversion
- * Version: 1.3.0
+ * Version: 1.4.0
  * Author: delvedor
  * Twitter: @delvedor
  * License: GNU GPLv2
