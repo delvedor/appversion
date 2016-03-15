@@ -1,7 +1,7 @@
 {
   "name": "appversion",
   "version": "1.5.0",
-  "description": "An extension of npm version, useful for keep track of the version, build and commit of your javascript application.",
+  "description": "AppVersion is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
   "main": "appversion.js",
   "bin": {
     "apv": "apv.js"
