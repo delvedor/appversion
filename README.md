@@ -1,12 +1,13 @@
 # AppVersion <a name="version"></a><a name="status"></a>
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/) [![AppVersion-version](https://img.shields.io/badge/AppVersion-1.4.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status)
+[![AppVersion-version](https://img.shields.io/badge/AppVersion-1.5.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status) [![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://travis-ci.org/delvedor/appversion) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
-**AppVersion** is intended as an extension of *npm version* and is a **cli tool** for keep track the *version*, *build*, *status* and *commit* of your javascript application.  
-The project is built following [semver](http://semver.org/) guidelines.
+**AppVersion** is a CLI tool whose purpose is to provide a **unique manager** of the version of you application.  
+It follows the **semver** guidelines, so the version of your code is divided in Major, Minor and Patch, [here](http://semver.org/) you can find the Semantic Versioning specification.  
+In addition AppVersion keeps track of the **build** with the last buold date, the build of the current version and the total number of build; it also keeps track of the **status** (stable, rc, ...) and the **commit code**.
 
-Usually a project has different configuration/package-manager files, such as *package.json*, and can be really tedious update the project number in every file.  
-Here comes to help AppVersion, an easy to use command line tool who updates all the files for you.  
-In addition AppVersion keeps track of the build date and number.
+AppVersion interacts with **NPM**, when you update the version using the AppVersion CLI tool, it updates automatically the *package.json* as well, and you can use the CLI commands inside your **NPM scripts**.  
+Furthermore AppVersion works well with **Git**, indeed you can add a Tag with the current version of your application to the repository and you can add one badge with the version and one badge with the status of your application to the *README.md*.  
+AppVersion also provides four easy to use APIs to access your version, build, status and commit from your application.
 
 The tool creates a json file named ```appversion.json``` in the root of your project with the following structure:
 ```json
@@ -75,8 +76,9 @@ Commands list:
 |         |  beta   |   Set the status to beta.              |
 |         |  alpha  |   Set the status to alpha.             |
 |                                                            |
-| generate-badge | version | Generates the .md code of a shield badge with the version of your application
-|                | status  | Generates the .md code of a shield badge with the status of your application
+| generate-badge | version | Generates the .md code of a shield badge with the version of your application.
+|                | status  | Generates the .md code of a shield badge with the status of your application.
+| add-git-tag    |         | Adds a tag with the version number to the git repo.
 | init    |           |   Generates the appversion.json file.|
 |                                                            |
 | help    |           |   Prints the commands list.          |
@@ -87,6 +89,16 @@ $ apv update minor
 $ apv set-version 1.3.2
 $ apv set-status rc.2
 ```
+If you want to add a *Git tag* to your repo with the version number of your code, you have two options:
+1. Add the `--tag` flag after `update` and `set-version` commands
+```
+$ apv update minor --tag
+$ apv set-version 1.3.2 --tag
+```
+2. Use `add-git-tag`
+```
+$ apv add-git-tag  
+```
 
 By default, AppVersion updates the *"version"* field in `package.json`; if you want to update the *"version"* field in more json files, just add the file name inside *appversion.json* in the json array field.
 
@@ -96,11 +108,13 @@ If you want that AppVersion *ignores all the subfolders* in your project, just p
 <a name="generateBadge"></a>
 AppVersion can provide you a wonderful shield badge with the version of your application that you can put in you .md file, like what you see at the top of this file.  
 Generate the badge is very easy, just type ```apv generate-badge version``` for the version badge and ```apv generate-badge status``` for the status badge and copy the output inside your .md file, then add the name of the md file (with the extension) inside the markdown array field in *appversion.json*, from now AppVersion will keep updated the badges every time you update your application.  
+*Badge examples:*  
+![AppVersion-version](https://img.shields.io/badge/AppVersion-2.4.1-brightgreen.svg?style=flat) ![AppVersion-status](https://img.shields.io/badge/Status-Beta.4-brightgreen.svg?style=flat)  
 This feature make use of the amazing service [shields.io](http://shields.io/).
 
 ### In app:
 
-| Function                                               |       |
+| APIs                                               |       |
 |--------------------------------------------------------|-------|
 | <a href="#getAppVersion">getAppVersion()</a>           | async |
 | <a href="#getAppVersionSync">getAppVersionSync()</a>   | sync  |
@@ -199,8 +213,8 @@ If you are using *npm scripts* you can easily integrate AppVersion in your workf
 - [x] Move `json`, `markdown`, `ignore` and `appversion` inside `config` field
 - [x] Implement "New version" message
 - [x] Split the code in multiple files divided by function.
-- [ ] When init is called, apv must create appversion.json with the same version number of package.json.
-- [ ] Integration with GitHub
+- [x] Integration with GitHub
+- [x] When init is called, apv must create appversion.json with the same version number of package.json.
 - [ ] SHA generator
 
 ## Build

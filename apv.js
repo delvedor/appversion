@@ -2,7 +2,7 @@
 
 /*
  * Project: appversion
- * Version: 1.4.0
+ * Version: 1.5.0
  * Author: delvedor
  * Twitter: @delvedor
  * License: GNU GPLv2
@@ -19,6 +19,7 @@ const setVersion = require('./lib/set').setVersion
 const setStatus = require('./lib/set').setStatus
 const createBadge = require('./lib/badge').createBadge
 const init = require('./lib/init').init
+const addGitTag = require('./lib/git').addGitTag
 const checkUpdate = require('./lib/updater').checkUpdate
 const apvVersion = require('./lib/parameters').apvVersion
 const helpDocs = require('./lib/parameters').helpDocs
@@ -31,6 +32,7 @@ program
   .option('set-version <param>', 'Sets a specific version number, the <param> must be x.y.z', setVersion)
   .option('set-status <param>', 'Sets a specific status, the <param> stage can be stable|rc|beta|alpha and the number must be a number', setStatus)
   .option('generate-badge <param>', 'Generates the .md code of a shield badge with the version of your application, <param> can be version|status', createBadge)
+  .option('add-git-tag, --tag', 'Adds a tag with the version number to the git repo.', addGitTag)
   .option('init', 'Generates the appversion.json file', init)
   .on('*', function (command) {
     this.commands.some(function (command) {

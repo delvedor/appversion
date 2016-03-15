@@ -1,6 +1,6 @@
 {
   "name": "appversion",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "An extension of npm version, useful for keep track of the version, build and commit of your javascript application.",
   "main": "appversion.js",
   "bin": {
@@ -20,7 +20,10 @@
     "build",
     "commit",
     "semantic",
-    "versioning"
+    "versioning",
+    "semver",
+    "tag",
+    "status"
   ],
   "author": "Tomas Della Vedova - @delvedor (http://delved.org)",
   "license": "GPLv2",
@@ -28,6 +31,9 @@
     "url": "https://github.com/delvedor/appversion/issues"
   },
   "homepage": "https://github.com/delvedor/appversion",
+  "engines": {
+    "node": ">= 4.0"
+  },
   "devDependencies": {
     "standard": "^6.0.8",
     "tape": "^4.5.1"

@@ -1,6 +1,6 @@
 /*
  * Project: appversion
- * Version: 1.4.0
+ * Version: 1.5.0
  * Author: delvedor
  * Twitter: @delvedor
  * License: GNU GPLv2
@@ -28,11 +28,9 @@ test(chalk.cyan.bold('Testing update'), (t) => {
   console.log(chalk.cyan('|- Testing build'))
   execSync('./apv.js update build')
   mod = JSON.parse(fs.readFileSync(JSON_FILE))
-  // Sometimes this test fails, because the seconds value can change.
-  let date = (new Date()).toString()
   t.equal(mod.build.number, original.build.number + 1, 'Build number was correctly updated.')
   t.equal(mod.build.total, original.build.total + 1, 'Build total was correctly updated.')
-  t.equal(mod.build.date, date, 'Date was correctly updated.')
+  t.equal(!!Date.parse(mod.build.date), true, 'Date was correctly updated.')
 
   console.log(chalk.cyan('|- Testing patch'))
   execSync('./apv.js update patch')
