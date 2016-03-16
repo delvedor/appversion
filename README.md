@@ -3,11 +3,11 @@
 
 **AppVersion** is a CLI tool whose purpose is to provide a **unique manager** of the version of you application.  
 It follows the **semver** guidelines, so the version of your code is divided in Major, Minor and Patch, [here](http://semver.org/) you can find the Semantic Versioning specification.  
-In addition AppVersion keeps track of the **build** with the last buold date, the build of the current version and the total number of build; it also keeps track of the **status** (stable, rc, ...) and the **commit code**.
+In addition AppVersion keeps track of the **build** with the last build date, the build of the current version and the total number of build; it also keeps track of the **status** (stable, rc, ...) and the **commit code**.
 
 AppVersion interacts with **NPM**, when you update the version using the AppVersion CLI tool, it updates automatically the *package.json* as well, and you can use the CLI commands inside your **NPM scripts**.  
 Furthermore AppVersion works well with **Git**, indeed you can add a Tag with the current version of your application to the repository and you can add one badge with the version and one badge with the status of your application to the *README.md*.  
-AppVersion also provides four easy to use APIs to access your version, build, status and commit from your application.
+AppVersion also provides easy to use APIs to access your version, build, status and commit from your application.
 
 The tool creates a json file named ```appversion.json``` in the root of your project with the following structure:
 ```json
@@ -89,13 +89,13 @@ $ apv update minor
 $ apv set-version 1.3.2
 $ apv set-status rc.2
 ```
-If you want to add a *Git tag* to your repo with the version number of your code, you have two options:
-1. Add the `--tag` flag after `update` and `set-version` commands
+If you want to add a *Git tag* to your repo with the version number of your code, you have two options:  
+1) Add the `--tag` flag after `update` and `set-version` commands
 ```
 $ apv update minor --tag
 $ apv set-version 1.3.2 --tag
 ```
-2. Use `add-git-tag`
+2) Use `add-git-tag`
 ```
 $ apv add-git-tag  
 ```
@@ -216,6 +216,7 @@ If you are using *npm scripts* you can easily integrate AppVersion in your workf
 - [x] Integration with GitHub
 - [x] When init is called, apv must create appversion.json with the same version number of package.json.
 - [ ] SHA generator
+- [ ] Integration with Grunt/Gulp
 
 ## Build
 ```
