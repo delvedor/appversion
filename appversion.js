@@ -1,16 +1,16 @@
 /*
  * Project: appversion
- * Version: 1.5.0
+ * Version: 1.5.2
  * Author: delvedor
  * Twitter: @delvedor
- * License: GNU GPLv2
+ * License: MIT
  * GitHub: https://github.com/delvedor/appversion
  */
 
 'use strict'
 
 const fs = require('fs')
-const path = require('path')
+const join = require('path').join
 const directory = require('app-root-path').path
 const check = require('type-check').typeCheck
 const JSON_FILE = 'appversion.json'
@@ -22,7 +22,7 @@ const JSON_FILE = 'appversion.json'
  */
 function getAppVersionSync () {
   try {
-    let obj = JSON.parse(fs.readFileSync(path.join(directory, JSON_FILE)))
+    let obj = require(join(directory, JSON_FILE))
     delete obj.config
     return obj
   } catch (err) {
@@ -38,7 +38,7 @@ function getAppVersionSync () {
  */
 function getAppVersion (callback) {
   if (!check('Function', callback)) throw new Error('getAppVersion() -> callback is not a function')
-  fs.readFile(path.join(directory, JSON_FILE), (err, data) => {
+  fs.readFile(join(directory, JSON_FILE), (err, data) => {
     data = JSON.parse(data)
     if (data) delete data.config
     callback(err, data)

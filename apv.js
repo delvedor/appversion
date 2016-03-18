@@ -2,17 +2,18 @@
 
 /*
  * Project: appversion
- * Version: 1.5.0
+ * Version: 1.5.2
  * Author: delvedor
  * Twitter: @delvedor
- * License: GNU GPLv2
+ * License: MIT
  * GitHub: https://github.com/delvedor/appversion
  */
 
 'use strict'
 
 // Modules
-const program = require('commander')
+const minimist = require('minimist')
+const chalk = require('chalk')
 // apv parameters and functions
 const update = require('./lib/update').update
 const setVersion = require('./lib/set').setVersion
@@ -22,32 +23,57 @@ const init = require('./lib/init').init
 const addGitTag = require('./lib/git').addGitTag
 const checkUpdate = require('./lib/updater').checkUpdate
 const apvVersion = require('./lib/parameters').apvVersion
-const helpDocs = require('./lib/parameters').helpDocs
+const help = require('./lib/help').help
 
-// commands arguments
-program
-  .version(apvVersion)
-  .usage('<option> <param>')
-  .option('update <param>', 'Updates the <param> that can be major|minor|patch|build|commit', update)
-  .option('set-version <param>', 'Sets a specific version number, the <param> must be x.y.z', setVersion)
-  .option('set-status <param>', 'Sets a specific status, the <param> stage can be stable|rc|beta|alpha and the number must be a number', setStatus)
-  .option('generate-badge <param>', 'Generates the .md code of a shield badge with the version of your application, <param> can be version|status', createBadge)
-  .option('add-git-tag, --tag', 'Adds a tag with the version number to the git repo.', addGitTag)
-  .option('init', 'Generates the appversion.json file', init)
-  .on('*', function (command) {
-    this.commands.some(function (command) {
-      return command._name === process.argv[0]
-    }) || this.help()
-  })
+// arguments parser
+const args = minimist(process.argv.slice(2))
 
-// Custom docs
-program.on('--help', () => {
-  console.log(helpDocs)
-})
+// if the flag -v|--version is passed
+if (args.v || args.version) {
+  console.log(chalk.cyan(apvVersion))
+  process.exit(1)
+}
 
-program.parse(process.argv)
-// Calls help() if there are no parameters
-if (process.argv.length <= 2) program.help()
+// if the flag -h|--help is passed
+if (args.h || args.help) {
+  help()
+  process.exit(1)
+}
+
+// if there are not arguments
+if (!args._.length) {
+  help()
+  process.exit(1)
+}
+
+if (args._.length > 2) console.log(chalk.yellow('AppVersion accepts only one command per time'))
+
+const cmd = args._[0]
+const param = args._[1] || null
+switch (cmd) {
+  case 'update':
+    update(param)
+    if (args.tag) addGitTag()
+    break
+  case 'set-version':
+    setVersion(param)
+    if (args.tag) addGitTag()
+    break
+  case 'set-status':
+    setStatus(param)
+    break
+  case 'generate-badge':
+    createBadge(param)
+    break
+  case 'add-git-tag':
+    addGitTag()
+    break
+  case 'init':
+    init()
+    break
+  default:
+    help()
+}
 
 // Checks for an update
 checkUpdate()

@@ -1,6 +1,6 @@
 {
   "name": "appversion",
-  "version": "1.5.0",
+  "version": "1.5.2",
   "description": "AppVersion is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
   "main": "appversion.js",
   "bin": {
@@ -26,7 +26,7 @@
     "status"
   ],
   "author": "Tomas Della Vedova - @delvedor (http://delved.org)",
-  "license": "GPLv2",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/delvedor/appversion/issues"
   },
@@ -41,7 +41,7 @@
   "dependencies": {
     "app-root-path": "^1.0.0",
     "chalk": "^1.1.1",
-    "commander": "^2.9.0",
+    "minimist": "^1.2.0",
     "request": "^2.69.0",
     "semver": "^5.1.0",
     "type-check": "^0.3.2",

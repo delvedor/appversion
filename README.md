@@ -1,5 +1,5 @@
 # AppVersion <a name="version"></a><a name="status"></a>
-[![AppVersion-version](https://img.shields.io/badge/AppVersion-1.5.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status) [![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://travis-ci.org/delvedor/appversion) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+[![AppVersion-version](https://img.shields.io/badge/AppVersion-1.5.2-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status) [![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://travis-ci.org/delvedor/appversion) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
 **AppVersion** is a CLI tool whose purpose is to provide a **unique manager** of the version of you application.  
 It follows the **semver** guidelines, so the version of your code is divided in Major, Minor and Patch, [here](http://semver.org/) you can find the Semantic Versioning specification.  
@@ -80,8 +80,6 @@ Commands list:
 |                | status  | Generates the .md code of a shield badge with the status of your application.
 | add-git-tag    |         | Adds a tag with the version number to the git repo.
 | init    |           |   Generates the appversion.json file.|
-|                                                            |
-| help    |           |   Prints the commands list.          |
 
 Some usage examples:   
 ```
@@ -237,6 +235,6 @@ The code follows the Standard code style.
 
 ______________________________________________________________________________________________________________________
 ## License
-The code is released under the GPLv2 license.
+The code is released under the MIT license.
 
 The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and non infringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.

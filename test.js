@@ -1,9 +1,9 @@
 /*
  * Project: appversion
- * Version: 1.5.0
+ * Version: 1.5.2
  * Author: delvedor
  * Twitter: @delvedor
- * License: GNU GPLv2
+ * License: MIT
  * GitHub: https://github.com/delvedor/appversion
  */
 
