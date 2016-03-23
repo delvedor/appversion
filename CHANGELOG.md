@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6.0
+- Added automation functionality
+
 ## v1.5.2
 - Reimplemented argv management with minimist
 - Now readJson makes use of require instead of readFileSync

@@ -1,6 +1,6 @@
 /*
  * Project: appversion
- * Version: 1.5.2
+ * Version: 1.6.0
  * Author: delvedor
  * Twitter: @delvedor
  * License: MIT
@@ -9,10 +9,12 @@
 
 'use strict'
 
+// Modules
 const fs = require('fs')
 const join = require('path').join
 const directory = require('app-root-path').path
 const check = require('type-check').typeCheck
+// apv parameters and functions
 const JSON_FILE = 'appversion.json'
 
 /**

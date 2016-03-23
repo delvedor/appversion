@@ -1,6 +1,6 @@
 {
   "name": "appversion",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "AppVersion is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
   "main": "appversion.js",
   "bin": {

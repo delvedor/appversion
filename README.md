@@ -1,11 +1,11 @@
 # AppVersion <a name="version"></a><a name="status"></a>
-[![AppVersion-version](https://img.shields.io/badge/AppVersion-1.5.2-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status) [![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://travis-ci.org/delvedor/appversion) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+[![AppVersion-version](https://img.shields.io/badge/AppVersion-1.6.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status) [![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://travis-ci.org/delvedor/appversion) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
 **AppVersion** is a CLI tool whose purpose is to provide a **unique manager** of the version of you application.  
 It follows the **semver** guidelines, so the version of your code is divided in Major, Minor and Patch, [here](http://semver.org/) you can find the Semantic Versioning specification.  
 In addition AppVersion keeps track of the **build** with the last build date, the build of the current version and the total number of build; it also keeps track of the **status** (stable, rc, ...) and the **commit code**.
 
-AppVersion interacts with **NPM**, when you update the version using the AppVersion CLI tool, it updates automatically the *package.json* as well, and you can use the CLI commands inside your **NPM scripts**.  
+AppVersion interacts with **NPM**, when you update the version using the AppVersion CLI tool, it updates automatically the *package.json* as well, and you can use the CLI commands inside your **NPM scripts**. See <a href="#automation">here</a> for more info about automation.  
 Furthermore AppVersion works well with **Git**, indeed you can add a Tag with the current version of your application to the repository and you can add one badge with the version and one badge with the status of your application to the *README.md*.  
 AppVersion also provides easy to use APIs to access your version, build, status and commit from your application.
 
@@ -195,8 +195,8 @@ composePattern('M.m.p-Ss n-d', (ptt) => {
   console.log(ptt)
 })
 ```
-
-## Automating
+<a name="automation"></a>
+## Automation
 If you are using *npm scripts* you can easily integrate AppVersion in your workflow, below you can find an example of a package.json:
 ```json
 ...
@@ -204,6 +204,20 @@ If you are using *npm scripts* you can easily integrate AppVersion in your workf
   "build": "<build command> && apv update build"
 },
 ...
+```
+If you are using Grunt or Gulp for automating your project, you can easily use AppVersion inside you grunt/gulp file.
+Just require **appversion/automation** and call the `update|setVersion|setStatus` method with the correct parameter.  
+Below you can find an example:
+```javascript
+const apv = require('appversion/automation')
+...
+apv.update('minor')
+...
+apv.setVersion('1.4.2')
+...
+apv.setStatus('Beta.2')
+...
+
 ```
 ## TODO
 - [x] Update status number
@@ -213,8 +227,8 @@ If you are using *npm scripts* you can easily integrate AppVersion in your workf
 - [x] Split the code in multiple files divided by function.
 - [x] Integration with GitHub
 - [x] When init is called, apv must create appversion.json with the same version number of package.json.
+- [x] Integration with Grunt/Gulp
 - [ ] SHA generator
-- [ ] Integration with Grunt/Gulp
 
 ## Build
 ```
