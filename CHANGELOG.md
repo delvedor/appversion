@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.7.0
+- Added aliases: patch>fix, minor>feature major>breaking, for making more expressive the command
+
 ## v1.6.0
 - Added automation functionality
 

@@ -1,5 +1,5 @@
 # AppVersion <a name="version"></a><a name="status"></a>
-[![AppVersion-version](https://img.shields.io/badge/AppVersion-1.6.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status) [![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://travis-ci.org/delvedor/appversion) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+[![AppVersion-version](https://img.shields.io/badge/AppVersion-1.7.0-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/delvedor/appversion?#status) [![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://travis-ci.org/delvedor/appversion) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
 **AppVersion** is a CLI tool whose purpose is to provide a **unique manager** of the version of you application.  
 It follows the **semver** guidelines, so the version of your code is divided in Major, Minor and Patch, [here](http://semver.org/) you can find the Semantic Versioning specification.  
@@ -63,9 +63,9 @@ Commands list:
 
 | **cmd** |  **args** |   **description**
 |:-------|:---------|:------------------------------------|
-| update  |  major    |   Updates major number.              |
-|         |  minor    |   Updates minor number.              |
-|         |  patch    |   Updates patch number.              |
+| update  |  major\breaking    |   Updates major number.  |
+|         |  minor\feature    |   Updates minor number.   |
+|         |  patch\fix    |   Updates patch number.       |
 |         |  build    |   Updates build number.              |
 |         |  commit   |   Updates commit code.               |
 |                                                            |
@@ -80,6 +80,8 @@ Commands list:
 |                | status  | Generates the .md code of a shield badge with the status of your application.
 | add-git-tag    |         | Adds a tag with the version number to the git repo.
 | init    |           |   Generates the appversion.json file.|
+
+When using the *update* command, use `major|minor|patch` or `breaking|feature|fix` is the same, is a question of making **more expressive** the command and what are you doing.
 
 Some usage examples:   
 ```
@@ -135,10 +137,10 @@ Return a string with the version following the pattern you passed as a input.
 pattern:
 
 | **Pattern** |  **description** |
-|:-----------|:----------------|
-| **M**       | version.major    |
-| **m**       | version.minor    |
-| **p**       | version.patch    |
+|:------------|:-----------------|
+| **M | B**   | version.major    |
+| **m | F**   | version.minor    |
+| **p | f**   | version.patch    |
 | **S**       | status.stage     |
 | **s**       | status.number    |
 | **n**       | build.number     |
@@ -228,6 +230,8 @@ apv.setStatus('Beta.2')
 - [x] Integration with GitHub
 - [x] When init is called, apv must create appversion.json with the same version number of package.json.
 - [x] Integration with Grunt/Gulp
+- [x] Add aliases: patch>fix, minor>feature major>breaking
+- [ ] Rewrite appendBadgeToMD with streams
 - [ ] SHA generator
 
 ## Build

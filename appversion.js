@@ -1,6 +1,6 @@
 /*
  * Project: appversion
- * Version: 1.6.0
+ * Version: 1.7.0
  * Author: delvedor
  * Twitter: @delvedor
  * License: MIT
@@ -90,9 +90,9 @@ function composePattern (pattern, callback) {
  * @return {String}         [correspondent pattern]
  *
  * pattern:
- * M : version.major
- * m : version.minor
- * p : version.patch
+ * M|B : version.major
+ * m|F : version.minor
+ * p|f : version.patch
  * S : status.stage
  * s : status.number
  * n : build.number
@@ -106,11 +106,11 @@ function switchPattern (obj, pattern) {
   if (!check('String', pattern)) throw new Error('switchPattern() -> pattern is not a string')
   if (!check('Object', obj)) throw new Error('switchPattern() -> obj is not an object')
   switch (pattern) {
-    case 'M':
+    case 'M' || 'B':
       return obj.version.major
-    case 'm':
+    case 'm' || 'F':
       return obj.version.minor
-    case 'p':
+    case 'p' || 'f':
       return obj.version.patch
     case 'S':
       return obj.status.stage
