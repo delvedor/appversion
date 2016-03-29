@@ -138,9 +138,9 @@ pattern:
 
 | **Pattern** |  **description** |
 |:------------|:-----------------|
-| **M | B**   | version.major    |
-| **m | F**   | version.minor    |
-| **p | f**   | version.patch    |
+| **M \ B**   | version.major    |
+| **m \ F**   | version.minor    |
+| **p \ f**   | version.patch    |
 | **S**       | status.stage     |
 | **s**       | status.number    |
 | **n**       | build.number     |
