@@ -42,7 +42,9 @@
     "app-root-path": "^1.0.0",
     "chalk": "^1.1.1",
     "minimist": "^1.2.0",
+    "replacestream": "^4.0.0",
     "request": "^2.69.0",
+    "self-stream": "^1.0.0",
     "semver": "^5.1.0",
     "type-check": "^0.3.2",
     "walk": "^2.3.9"
