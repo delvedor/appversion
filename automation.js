@@ -1,12 +1,3 @@
-/*
- * Project: appversion
- * Version: 1.7.0
- * Author: delvedor
- * Twitter: @delvedor
- * License: MIT
- * GitHub: https://github.com/delvedor/appversion
- */
-
 'use strict'
 
 /**

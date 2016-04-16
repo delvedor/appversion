@@ -2,7 +2,7 @@
 
 /*
  * Project: appversion
- * Version: 1.7.0
+ * Version: 1.7.1
  * Author: delvedor
  * Twitter: @delvedor
  * License: MIT

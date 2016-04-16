@@ -1,12 +1,3 @@
-/*
- * Project: appversion
- * Version: 1.7.0
- * Author: delvedor
- * Twitter: @delvedor
- * License: MIT
- * GitHub: https://github.com/delvedor/appversion
- */
-
 'use strict'
 
 // Modules
@@ -151,7 +142,7 @@ test(chalk.cyan.bold('Testing badge'), (t) => {
     let expectedOutput = `\nAppVersion: version badge generated!
 
 ${readmeCode}
-  \n`
+\n`
     t.equal(stdout, expectedOutput, 'Generate version badge works correctly!')
   })
 
@@ -164,7 +155,7 @@ ${readmeCode}
     let expectedOutput = `\nAppVersion: status badge generated!
 
 ${readmeCode}
-  \n`
+\n`
     t.equal(stdout, expectedOutput, 'Generate status badge works correctly!')
   })
   // Restore JSON_FILE and README.md to the original values

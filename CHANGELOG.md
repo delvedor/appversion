@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.7.1
+- Reimplemented all the badge code with streams
+
 ## v1.7.0
 - Added aliases: patch>fix, minor>feature major>breaking, for making more expressive the command
 
